@@ -19,17 +19,32 @@ Created on Thu Apr 13 17:34:26 2023
 
 import numpy as np
 
-def XYZ_to_flh(X,Y,Z):
+class Transformacje:
     a = 6378137
-    e2 = 0.00669438002290
-    p = np.sqrt(X**2 + Y**2)
-    f = np.arctan(Z/(p*(1-e2)))
-    while True:
+    e2 = 0.00669438002290  
+    def XYZ_to_flh(X,Y,Z,a,e2):
+        p = np.sqrt(X**2 + Y**2)
+        f = np.arctan(Z/(p*(1-e2)))
+        while True:
+            N = a/np.sqrt(1-e2*np.sin(f)**2)
+            h = (p/np.cos(f))-N
+            fp = f
+            f = np.arctan(Z/(p*(1-e2*(N/(N+h)))))
+            if np.abs(fp - f) < (0.000001/206265):
+                break
+        l = np.arctan2(Y,X) 
+        return(f,l,h)
+    
+    def flh_to_XYZ(f,l,h,a,e2):
         N = a/np.sqrt(1-e2*np.sin(f)**2)
-        h = (p/np.cos(f))-N
-        fp = f
-        f = np.arctan(Z/(p*(1-e2*(N/(N+h)))))
-        if np.abs(fp - f) < (0.000001/206265):
-            break
-    l = np.arctan2(Y,X) 
-    return(f,l,h)
+        X = (N + h)*np.cos(f)*np.cos(l)
+        Y = (N + h)*np.cos(f)*np.sin(l)
+        Z = (N*(1-e2)+h)*np.sin(f)
+        return(X,Y,Z)
+    
+    
+    
+    
+    
+    
+    
