@@ -65,27 +65,32 @@ class Transformacje:
         return(R.T @ dX)
 
 #karo
-    # z fi lam GRS80 do 2000
-    
+
+    # funkcja do zamieniania stopni min sek na przecinkowe stopnie
+    def dms2degrees(self,d,m,s):
+        d = d + (m/60) + (s/3600)
+        return(d) 
+
     def dms2rad(self, d, m, s):
         kat_rad = np.radians(d + m/60 + s/3600)
         return kat_rad   
     
+    # lambda poprawiona
     def lambda0_2000(self, l_deg):
         l = l_deg*np.pi/180
-        if l<self.dms2rad(15, 00, 00):
+        if l < self.dms2rad(15, 00, 00) or l == self.dms2rad(15, 00, 00):
             l0 = self.dms2rad(15, 00, 00)
             nr_strefy = 5
             print('l0 =', l0,'nr strefy = ', nr_strefy)
-        elif l<self.dms2rad(16, 30, 00):
+        elif l > self.dms2rad(15, 00, 00) and l < self.dms2rad(16, 30, 00):
             l0 = self.dms2rad(15, 00, 00)
             nr_strefy = 5
             print('l0 =', l0,'nr strefy = ', nr_strefy)
-        elif l<self.dms2rad(19, 30, 00):
+        elif l > self.dms2rad(16, 30, 00) and l < self.dms2rad(19, 30, 00):
             l0 = self.dms2rad(18, 00, 00)
             nr_strefy = 6
             print('l0 =', l0,'nr strefy = ', nr_strefy)
-        elif l<self.dms2rad(22, 30, 00):
+        elif l > self.dms2rad(19, 30, 00) and l < self.dms2rad(22, 30, 00):
             l0 = self.dms2rad(21, 00, 00)
             nr_strefy = 7
             print('l0 =', l0,'nr strefy = ', nr_strefy)
@@ -94,6 +99,35 @@ class Transformacje:
             nr_strefy = 8
             print('l0 =', l0,'nr strefy = ', nr_strefy)
         return l0, nr_strefy
+    
+    # stara funkcja
+    # def lambda0_2000(self, l_deg):
+    #     l = l_deg*np.pi/180
+    #     if l<self.dms2rad(15, 00, 00):
+    #         l0 = self.dms2rad(15, 00, 00)
+    #         nr_strefy = 5
+    #         print('l0 =', l0,'nr strefy = ', nr_strefy)
+    #     elif l<self.dms2rad(16, 30, 00):
+    #         l0 = self.dms2rad(15, 00, 00)
+    #         nr_strefy = 5
+    #         print('l0 =', l0,'nr strefy = ', nr_strefy)
+    #     elif l<self.dms2rad(19, 30, 00):
+    #         l0 = self.dms2rad(18, 00, 00)
+    #         nr_strefy = 6
+    #         print('l0 =', l0,'nr strefy = ', nr_strefy)
+    #     elif l<self.dms2rad(22, 30, 00):
+    #         l0 = self.dms2rad(21, 00, 00)
+    #         nr_strefy = 7
+    #         print('l0 =', l0,'nr strefy = ', nr_strefy)
+    #     else:
+    #         l0 = self.dms2rad(24, 00, 00)
+    #         nr_strefy = 8
+    #         print('l0 =', l0,'nr strefy = ', nr_strefy)
+    #     return l0, nr_strefy
+ 
+    
+
+    # z fi lam GRS80 do 2000
     
     def fl_80_2_gk2000(self, f, l): #f,l w stopniach 
         l0,nr_strefy = self.lambda0_2000(l)
@@ -116,7 +150,7 @@ class Transformacje:
         A6 = (35 * (e2**3)) / 3072
         sigma = a * (A0 * f - A2 * np.sin(2 * f) + A4 * np.sin(4 * f) - A6 * np.sin(6 * f))
         X_gk_2000 = sigma + ((d_l**2) / 2) * N * np.sin(f) * np.cos(f) * (1 + ((d_l**2) / 12) * ((np.cos(f))**2) * (5 - (t**2) + 9 * eta2 + 4 * eta2**2) + ((d_l**4) / 360) * ((np.cos(f))**4) * (61 - 58 * (t**2) + (t**4) + 270 * eta2 - 330 * eta2 * (t**2)))
-        Y_gk_2000 = d_l * N * np.cos(f) * (1 + ((d_l**2) / 6) * ((np.cos(f))**2) * (1 - (t**2) + eta2) + ((d_l**4) / 120) * ((np.cos(f))**4) * (5 - 18 * (t**2) + (t**4) + 14 * eta2 - 58 * eta2 * (t**2)))
+        Y_gk_2000 = d_l * N * np.cos(f) * (1 + (((d_l**2) / 6) * ((np.cos(f))**2) * (1 - (t**2) + eta2)) + (((d_l**4) / 120) * ((np.cos(f))**4) * (5 - 18 * (t**2) + (t**4) + 14 * eta2 - 58 * eta2 * (t**2))))
         return(X_gk_2000, Y_gk_2000, nr_strefy)   
         
     # z fi lam GRS80 do 1992
@@ -266,7 +300,7 @@ if __name__ == '__main__':
     print(result)
 
 
-    
-    
+
+        
     
     
