@@ -5,18 +5,6 @@ Created on Thu Apr 13 17:34:26 2023
 @author: vikto
 """
 
-# Program/skrypt musi:
-# - być napisany jako klasa zawierająca metody implementujące poszczególne transformacje
-# - posiadać strukturę, w której definicje są oddzielone od wywołań klauzulą 'if __name__ == "__main__"'
-# - implementować następujące trnsformacje (bez analizy dokładnościowej):
-#     - XYZ (geocentryczne) -> BLH (elipsoidalne fi, lambda, h) - pomoce naukowe: http://www.asgeupos.pl/index.php?wpg_type=tech_transf&sub=xyz_blh, https://ewmapa.pl/dane/wytyczne_g-1.10.pdf, http://www.geonet.net.pl/images/2002_12_uklady_wspolrz.pdf
-#     - BLH -> XYZ - pomoce naukowe: http://www.asgeupos.pl/index.php?wpg_type=tech_transf&sub=xyz_blh, https://ewmapa.pl/dane/wytyczne_g-1.10.pdf, http://www.geonet.net.pl/images/2002_12_uklady_wspolrz.pdf
-#     - XYZ -> NEUp (topocentryczne northing, easting, up) - pomoce naukowe: https://notatek.pl/transformacja-wspolrzednych-geocentrycznych-odbiornika-do-wspolrzednych-topocentrycznych
-#     - BL(GRS80, WGS84, ew. Krasowski) -> 2000 - pomoce naukowe: http://www.geonet.net.pl/images/2002_12_uklady_wspolrz.pdf, https://ewmapa.pl/dane/wytyczne_g-1.10.pdf, http://www.asgeupos.pl/index.php?wpg_type=tech_transf&sub=xyz_blh
-#     - BL(GRS80, WGS84, ew. Krasowski) -> 1992 - pomoce naukowe: http://www.geonet.net.pl/images/2002_12_uklady_wspolrz.pdf, https://ewmapa.pl/dane/wytyczne_g-1.10.pdf, http://www.asgeupos.pl/index.php?wpg_type=tech_transf&sub=xyz_blh
-
-
-
 import numpy as np
 import argparse
 
@@ -233,6 +221,12 @@ if __name__ == '__main__':
     parser_flh.add_argument('l', type=float, help='współrzędna lambda')
     parser_flh.add_argument('h', type=float, help='współrzędna h')
 
+    parser_XYZ_to_neu = subparsers.add_parser('XYZ_to_neu', help='Transformuj XYZ na neu')
+    parser_XYZ_to_neu.add_argument('dX', type=float, help='delta X')
+    parser_XYZ_to_neu.add_argument('X', type=float, help='współrzędna X')
+    parser_XYZ_to_neu.add_argument('Y', type=float, help='współrzędna Y')
+    parser_XYZ_to_neu.add_argument('Z', type=float, help='współrzędna Z')
+
     parser_fl_GRS80_to_GK2000 = subparsers.add_parser('fl_GRS80_to_GK2000', help='Transformuj fl GRS80 na GK2000')
     parser_fl_GRS80_to_GK2000.add_argument('f', type=float, help='współrzędna fi w stopniach')
     parser_fl_GRS80_to_GK2000.add_argument('l', type=float, help='współrzędna lambda w stopniach')
@@ -257,6 +251,8 @@ if __name__ == '__main__':
         result = transform.XYZ_to_flh(args.X, args.Y, args.Z)
     elif args.operation == 'flh_to_XYZ':
         result = transform.flh_to_XYZ(args.f, args.l, args.h)
+    if args.operation == 'XYZ_to_neu':
+        result = transform.XYZ_to_neu(args.dX, args.X, args.Y, args.Z)        
     elif args.operation == 'fl_GRS80_to_GK2000':
         result = transform.fl_80_2_gk2000(args.f, args.l)
     elif args.operation == 'fl_GRS80_to_GK1992':
