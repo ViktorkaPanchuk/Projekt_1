@@ -21,7 +21,7 @@ import numpy as np
 import argparse
 
 class Transformacje: 
-    def rad_to_dms(x):
+    def rad_to_dms(self,x):
         sig = ''
         if x<0:
             sig = '-'
@@ -112,13 +112,7 @@ class Transformacje:
         X_gk_2000 = sigma + ((d_l**2) / 2) * N * np.sin(f) * np.cos(f) * (1 + ((d_l**2) / 12) * ((np.cos(f))**2) * (5 - (t**2) + 9 * eta2 + 4 * eta2**2) + ((d_l**4) / 360) * ((np.cos(f))**4) * (61 - 58 * (t**2) + (t**4) + 270 * eta2 - 330 * eta2 * (t**2)))
         Y_gk_2000 = d_l * N * np.cos(f) * (1 + ((d_l**2) / 6) * ((np.cos(f))**2) * (1 - (t**2) + eta2) + ((d_l**4) / 120) * ((np.cos(f))**4) * (5 - 18 * (t**2) + (t**4) + 14 * eta2 - 58 * eta2 * (t**2)))
         return(X_gk_2000, Y_gk_2000, nr_strefy)   
-    
-    def GK_2_PL2000(self,X_gk,Y_gk,nr_strefy):
-        m0 = 0.999923
-        X2000 = X_gk * m0
-        Y2000= m0 * Y_gk + nr_strefy * 1000000 + 500000
-        return(X2000,Y2000)
-    
+        
     # z fi lam GRS80 do 1992
         
     def fl_80_2_gk1992(self, f, l): #f,l w stopniach 
@@ -144,12 +138,6 @@ class Transformacje:
         X_gk_92 = sigma + ((d_l**2) / 2) * N * np.sin(f) * np.cos(f) * (1 + ((d_l**2) / 12) * ((np.cos(f))**2) * (5 - (t**2) + 9 * eta2 + 4 * eta2**2) + ((d_l**4) / 360) * ((np.cos(f))**4) * (61 - 58 * (t**2) + (t**4) + 270 * eta2 - 330 * eta2 * (t**2)))
         Y_gk_92 = d_l * N * np.cos(f) * (1 + ((d_l**2) / 6) * ((np.cos(f))**2) * (1 - (t**2) + eta2) + ((d_l**4) / 120) * ((np.cos(f))**4) * (5 - 18 * (t**2) + (t**4) + 14 * eta2 - 58 * eta2 * (t**2)))
         return(X_gk_92, Y_gk_92)   
-    
-    def GK_2_PL1992(X_gk,Y_gk):
-        m0 = 0.9993
-        X1992 = X_gk * m0 - 5300000
-        Y1992 = m0 * Y_gk + 500000
-        return(X1992,Y1992)
     
     
    # z fi lam WGS84 do 2000
@@ -217,24 +205,49 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Transformacje geodezyjne')
     subparsers = parser.add_subparsers(title='Operacja', dest='operation', required=True)
 
-    parser_XYZ = subparsers.add_parser('XYZ', help='Transformuj współrzędne XYZ na flh')
+    parser_XYZ = subparsers.add_parser('XYZ_to_flh', help='Transformuj XYZ na flh')
     parser_XYZ.add_argument('X', type=float, help='współrzędna X')
     parser_XYZ.add_argument('Y', type=float, help='współrzędna Y')
     parser_XYZ.add_argument('Z', type=float, help='współrzędna Z')
 
-    parser_flh = subparsers.add_parser('flh', help='Transformuj współrzędne flh na XYZ')
+    parser_flh = subparsers.add_parser('flh_to_XYZ', help='Transformuj flh na XYZ')
     parser_flh.add_argument('f', type=float, help='współrzędna fi')
     parser_flh.add_argument('l', type=float, help='współrzędna lambda')
     parser_flh.add_argument('h', type=float, help='współrzędna h')
+
+    parser_fl_GRS80_to_GK2000 = subparsers.add_parser('fl_GRS80_to_GK2000', help='Transformuj fl GRS80 na GK2000')
+    parser_fl_GRS80_to_GK2000.add_argument('f', type=float, help='współrzędna fi w stopniach')
+    parser_fl_GRS80_to_GK2000.add_argument('l', type=float, help='współrzędna lambda w stopniach')
+
+    parser_fl_GRS80_to_GK1992 = subparsers.add_parser('fl_GRS80_to_GK1992', help='Transformuj fl GRS80 na GK1992')
+    parser_fl_GRS80_to_GK1992.add_argument('f', type=float, help='współrzędna fi w stopniach')
+    parser_fl_GRS80_to_GK1992.add_argument('l', type=float, help='współrzędna lambda w stopniach')
+
+    parser_fl_GRS84_to_GK2000 = subparsers.add_parser('fl_GRS84_to_GK2000', help='Transformuj fl GRS84 na GK2000')
+    parser_fl_GRS84_to_GK2000.add_argument('f', type=float, help='współrzędna fi w stopniach')
+    parser_fl_GRS84_to_GK2000.add_argument('l', type=float, help='współrzędna lambda w stopniach')
+
+    parser_fl_GRS84_to_GK1992 = subparsers.add_parser('fl_GRS84_to_GK1992', help='Transformuj fl GRS84 na GK1992')
+    parser_fl_GRS84_to_GK1992.add_argument('f', type=float, help='współrzędna fi w stopniach')
+    parser_fl_GRS84_to_GK1992.add_argument('l', type=float, help='współrzędna lambda w stopniach')
 
     args = parser.parse_args()
 
     transform = Transformacje()
 
-    if args.operation == 'XYZ':
+    if args.operation == 'XYZ_to_flh':
         result = transform.XYZ_to_flh(args.X, args.Y, args.Z)
-    elif args.operation == 'flh':
+    elif args.operation == 'flh_to_XYZ':
         result = transform.flh_to_XYZ(args.f, args.l, args.h)
+    elif args.operation == 'fl_GRS80_to_GK2000':
+        result = transform.fl_80_2_gk2000(args.f, args.l)
+    elif args.operation == 'fl_GRS80_to_GK1992':
+        result = transform.fl_80_2_gk1992(args.f, args.l) 
+    elif args.operation == 'fl_GRS84_to_GK2000':
+        result = transform.fl_84_2_gk2000(args.f, args.l)
+    elif args.operation == 'fl_GRS84_to_GK1992':
+        result = transform.fl_84_2_gk1992(args.f, args.l)
+        
 
     print(result)
 
