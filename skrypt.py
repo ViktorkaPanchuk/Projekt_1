@@ -57,6 +57,24 @@ class Transformacje:
         Y = (N + h)*np.cos(f)*np.sin(l)
         Z = (N*(1-e2)+h)*np.sin(f)
         return(X,Y,Z)
+    
+    def XYZ_to_neu(self,dX,X,Y,Z):
+        a = 6378137
+        e2 = 0.00669438002290 
+        p = np.sqrt(X**2 + Y**2)
+        f = np.arctan(Z/(p*(1-e2)))
+        while True:
+            N = a/np.sqrt(1-e2*np.sin(f)**2)
+            h = (p/np.cos(f))-N
+            fp = f
+            f = np.arctan(Z/(p*(1-e2*(N/(N+h)))))
+            if np.abs(fp - f) < (0.000001/206265):
+                break
+        l = np.arctan2(Y,X)
+        R = np.array([[-np.sin(f)*np.cos(l), -np.sin(l), np.cos(f)*np.cos(l)],
+                      [-np.sin(f)*np.sin(l), np.cos(l), np.cos(f)*np.sin(l)],
+                      [np.cos(f), 0, np.sin(f)]])       
+        return(R.T @ dX)
 
 #karo
     # z fi lam GRS80 do 2000
