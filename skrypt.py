@@ -392,19 +392,34 @@ if __name__ == '__main__':
     if args.operation == 'pobierz_dane':
         result = transform.pobranie_wsp(args.file_path, args.rodzaj_transformacji)
     if args.operation == 'XYZ_to_flh':
-        result = transform.XYZ_to_flh(args.X, args.Y, args.Z)
+        f,l,h = transform.XYZ_to_flh(args.X, args.Y, args.Z)
+        print("Szerokość geodezyjna: ", f)
+        print("Długość geodezyjna: ", l)
+        print("Wysokość geodezyjna: ", h)    
     elif args.operation == 'flh_to_XYZ':
-        result = transform.flh_to_XYZ(args.f, args.l, args.h)
-    if args.operation == 'XYZ_to_neu':
-        result = transform.XYZ_to_neu(args.dX, args.X, args.Y, args.Z)        
+        X,Y,Z = transform.flh_to_XYZ(args.f, args.l, args.h)
+        print("Współrzędna X: ", X)
+        print("Współrzędna Y: ", Y)
+        print("Współrzędna Z: ", Z)    
+    elif args.operation == 'XYZ_to_neu':
+        result = transform.XYZ_to_neu(args.dX, args.X, args.Y, args.Z) 
+        print("Współrzędne neu", result)
     elif args.operation == 'fl_GRS80_to_2000':
-        result = transform.fl_80_2_2000(args.f, args.l)
+        X2000,Y2000 = transform.fl_80_2_2000(args.f, args.l)
+        print("Współrzędna X2000: ", X2000)
+        print("Współrzędna Y2000: ", Y2000)
     elif args.operation == 'fl_GRS80_to_1992':
-        result = transform.fl_80_2_1992(args.f, args.l) 
+        X1992,Y1992 = transform.fl_80_2_1992(args.f, args.l) 
+        print("Współrzędna X1992: ", X1992)
+        print("Współrzędna Y1992: ", Y1992)
     elif args.operation == 'fl_WGS84_to_2000':
-        result = transform.fl_84_2_2000(args.f, args.l)
+        X2000,Y2000 = transform.fl_84_2_2000(args.f, args.l)
+        print("Współrzędna X2000: ", X2000)
+        print("Współrzędna Y2000: ", Y2000)
     elif args.operation == 'fl_WGS84_to_1992':
-        result = transform.fl_84_2_1992(args.f, args.l)
+        X1992,Y1992 = transform.fl_84_2_1992(args.f, args.l)
+        print("Współrzędna X1992: ", X1992)
+        print("Współrzędna Y1992: ", Y1992)
 
         
         
