@@ -213,7 +213,7 @@ Y1992 (typ:float) - płaską współrzędną Y w układzie Gaussa-Krüger 1992
 
 - Przez wiersz poleceń:
 
-![Example screenshot](C:\Users\vikto\OneDrive\Dokumenty\Geodezja\Informatyka_II\Projekty\Projekt_1)
+![Example screenshot](/Użycie_def.png)
 
 
 
