@@ -9,6 +9,35 @@ import numpy as np
 import argparse
 
 class Transformacje: 
+    
+    #czesc pobierajaca dane
+    
+    def __init__(self):
+        self.wspolrzedne = []
+    
+    # do pobierania wsp - wsp musza byc w pliku bez spacji w kolejnosci f,l,h, oddzielone przecinkami
+    # file_path to scieżka skopiowana do danego pliku 
+    def pobranie_wsp(self, file_path): 
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+            for line in lines:
+                coordinates = []
+                for wsp in line.strip().split(','):
+                    coordinates.append((wsp))
+                    #coordinates = map(float, wsp)
+                self.wspolrzedne.append(coordinates)
+                #self.wspolrzedne.append(coordinates)
+                f_kolumna = [row[0] for row in self.wspolrzedne]
+                #f_kolumna = [self.wspolrzedne[:,0]]
+                l_kolumna = [row[1] for row in self.wspolrzedne]
+                #l_kolumna = [self.wspolrzedne[:,1]]
+                h_kolumna = [row[2] for row in self.wspolrzedne]
+                #h_kolumna = [self.wspolrzedne[:,2]]
+        return f_kolumna, l_kolumna, h_kolumna
+    
+    
+    # funkcje transformacji
+    
     def rad_to_dms(self,x):
         sig = ''
         if x<0:
@@ -253,14 +282,18 @@ class Transformacje:
         Y1992 = m0 * Y84_gk_92 + 500000
         return(X1992,Y1992)  
     
-
-
-
+    
+    
+   
 
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Transformacje geodezyjne')
     subparsers = parser.add_subparsers(title='Operacja', dest='operation', required=True)
+
+    parser_pobranie_wsp = subparsers.add_parser('pobierz_dane', help = 'Pobierz współrzędne do obliczeń z pliku txt')
+    parser_pobranie_wsp.add_argument('file_path', help='scieżka do pliku w formacie cos/cos/folder/plik')
+    
 
     parser_XYZ = subparsers.add_parser('XYZ_to_flh', help='Transformuj XYZ na flh')
     parser_XYZ.add_argument('X', type=float, help='współrzędna X')
@@ -301,6 +334,9 @@ if __name__ == '__main__':
 
     transform = Transformacje()
 
+
+    if args.operation == 'pobierz_dane':
+        result = transform.pobranie_wsp(args.file_path)
     if args.operation == 'XYZ_to_flh':
         result = transform.XYZ_to_flh(args.X, args.Y, args.Z)
     elif args.operation == 'flh_to_XYZ':
@@ -315,6 +351,8 @@ if __name__ == '__main__':
         result = transform.fl_84_2_2000(args.f, args.l)
     elif args.operation == 'fl_WGS84_to_GK1992':
         result = transform.fl_84_2_1992(args.f, args.l)
+
+        
         
 
     print(result)
