@@ -6,9 +6,9 @@ Moduł Transformacje zawiera metody: XYZ_to_flh, flh_to_XYZ XYZ_to_neu, fl_80_2_
 ## Spis treści:
 - [Do zainstalowania](#do-zainstalowania)
 - [rad_to_dms](#rad_to_dms)
-- [XYZ_to_flh](#XYZ_to_flh)
-- [flh_to_XYZ](#flh_to_XYZ)
-- [XYZ_to_neu](#XYZ_to_neu)
+- [XYZ_to_flh](#xyz_to_flh)
+- [flh_to_XYZ](#flh_to_xyz)
+- [XYZ_to_neu](#xyz_to_neu)
 - [dms2degrees](#dms2degrees)
 - [dms2rad](#dms2rad)
 - [lambda0_2000](#lambda0_2000)
@@ -17,8 +17,7 @@ Moduł Transformacje zawiera metody: XYZ_to_flh, flh_to_XYZ XYZ_to_neu, fl_80_2_
 - [fl_84_2_gk2000](#fl_84_2_gk2000)
 - [fl_84_2_gk1992](#fl_84_2_gk1992)
 - [Przykłady używania funkcji](#Przykłady-używania-funkcji)
-- [](#)
-- [](#)
+
 
 ## Do zainstalowania
 - Programy:
@@ -34,7 +33,7 @@ Moduł Transformacje zawiera metody: XYZ_to_flh, flh_to_XYZ XYZ_to_neu, fl_80_2_
   - Argparse
   - Math
 
-## rad_to_dms(x)
+## rad_to_dms
 Funkcja ta konwertuje wartość kątową w radianach na stopnie, minuty i sekundy. Argumentem metody jest liczba typu float oznaczająca wartość kąta w radianach.
 
 - Argumenty:
