@@ -391,7 +391,7 @@ if __name__ == '__main__':
 
     if args.operation == 'pobierz_dane':
         result = transform.pobranie_wsp(args.file_path, args.rodzaj_transformacji)
-    if args.operation == 'XYZ_to_flh':
+    elif args.operation == 'XYZ_to_flh':
         f,l,h = transform.XYZ_to_flh(args.X, args.Y, args.Z)
         print("Szerokość geodezyjna: ", f)
         print("Długość geodezyjna: ", l)
@@ -420,11 +420,9 @@ if __name__ == '__main__':
         X1992,Y1992 = transform.fl_84_2_1992(args.f, args.l)
         print("Współrzędna X1992: ", X1992)
         print("Współrzędna Y1992: ", Y1992)
+    else:
+        print("Proszę wybrać poprawną opcję")
 
-        
-        
-
-    print(result)
 
 
 
