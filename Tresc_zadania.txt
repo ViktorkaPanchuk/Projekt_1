@@ -1,0 +1,28 @@
+
+- potrafić transformować wiele współrzędnych zapisanych w pliku tekstowym przekazywanym do programu jako argument i tworzyć plik wynikowy
+- udokumentowany, czyli opisany na githubie w pliku README.md, który ma zawierać następujące informacje:
+
+      oraz rezultatami tych wywołań (przykładowe wywołania powinny za input brać plik z przykładowymi danymi)
+    - znane błędy i nietypowe zachowania programu, które nie zostały jeszcze naprawione
+
+Sprawozdanie z projektumusi:
+- być napisane w latex na templatce podanej na pierwszych zajęciach
+- zawierać następujące rozdziały:
+    - cel ćwiczenia, czyli "stworzenie skryptu implementującego takie-a-takie transformacje"
+    - wykorzystane narzędzia i materiały potrzebne do replikacji ćwiczenia (python, spyder, jaki system operacyjny, ...)
+    - przebieg ćwiczenia bez dokumentacji programu (ta ma być na githubie) czyli: zrobiliśmy to-i-to, potem to-i-to z wykorzystaniem wzorów/algorytmów 
+      które znaleźliśmy tu-i-tu, a na koniec sprawdziliśmy za pomocą programu takiego-a-takiego czy nasze wyniki są poprawne. Ponadto powinny zostać 
+      zawarte inne istotne informacje tj. dlaczego zdecydowaiśmy się na taką a nie inną implementację jakiegoś algorytmu 
+    - podsumowanie zawierające:
+        - rezultat, czyli link do repozytorium github, z którego można pobrać program
+        - umiejętności nabyte w trakcie wykonywania ćwiczenia:
+            - pisanie kodu obiektowego w Pythonie
+            - implementowanie algorytmów pochodzących ze źródeł zewnętrznych (tj. takich, których nie wymyśliliśmy sami)
+            - tworzenie dokumentów w latex
+            - współpraca w wieloosobowym zespole z wykorzystaniem systemu kontroli wersji git
+            - tworzenie narzędzi w interfejsie tekstowym (cli) potrafiących przyjmować argumenty przy wywołaniu
+            - pisanie użytecznej dokumentacji
+        - spostrzeżenia i trudności napotkane w trakcie wykonywania ćwiczenia wraz ze sposobem ich rozwiązania/ominięcia lub informacją, 
+          że nie udało się ich rozwiązać/ominąć (chodzi o konkrety np. spostrzeżenie "wywołanie skryptu w windows cmd z dowolnego folderu 
+          komendą taką-a-taką działa bez problemu, ale w PowerShell otrzymujemy komunikat taki-a-taki i nie udało nam się tego zagadnienia wyjaśnić" 
+    - bibliografia
