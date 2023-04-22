@@ -7,6 +7,7 @@ Created on Thu Apr 13 17:34:26 2023
 
 import numpy as np
 import argparse
+import math
 
 class Transformacje: 
     
@@ -17,23 +18,49 @@ class Transformacje:
     
     # do pobierania wsp - wsp musza byc w pliku bez spacji w kolejnosci f,l,h, oddzielone przecinkami
     # file_path to scieżka skopiowana do danego pliku 
-    def pobranie_wsp(self, file_path): 
+    def pobranie_wsp(self, file_path, rodzaj_transformacji): 
         with open(file_path, 'r') as f:
             lines = f.readlines()
             for line in lines:
                 coordinates = []
                 for wsp in line.strip().split(','):
                     coordinates.append((wsp))
-                    #coordinates = map(float, wsp)
                 self.wspolrzedne.append(coordinates)
-                #self.wspolrzedne.append(coordinates)
-                f_kolumna = [row[0] for row in self.wspolrzedne]
-                #f_kolumna = [self.wspolrzedne[:,0]]
-                l_kolumna = [row[1] for row in self.wspolrzedne]
-                #l_kolumna = [self.wspolrzedne[:,1]]
-                h_kolumna = [row[2] for row in self.wspolrzedne]
-                #h_kolumna = [self.wspolrzedne[:,2]]
-        return f_kolumna, l_kolumna, h_kolumna
+            self.f_kolumna = [row[0] for row in self.wspolrzedne]
+            self.l_kolumna = [row[1] for row in self.wspolrzedne]
+            self.h_kolumna = [row[2] for row in self.wspolrzedne]
+                #return(f_kolumna,l_kolumna,h_kolumna)
+            
+            if rodzaj_transformacji == 'XYZ_to_flh':
+                f,l,h = self.XYZ_to_flh(self.f_kolumna, self.l_kolumna, self.h_kolumna) 
+                wynik = np.array([f,l,h])
+                wynik = np.transpose(wynik)
+                print('')
+                print('Wynik transformacji XYZ do flh: ', wynik)
+            
+            # do tego momentu działa, reszta nie 
+            
+            elif rodzaj_transformacji == 'flh_to_XYZ':
+                X,Y,Z = self.flh_to_XYZ(self.f_kolumna, self.l_kolumna, self.h_kolumna)
+                print('Wynik transformacji flh do XYZ: ', 'X =', X,'Y =', Y, 'Z =', Z)
+                
+            elif rodzaj_transformacji == 'fl_GRS80_to_2000':
+                X2000,Y2000 = self.fl_80_2_2000(self.f_kolumna,self.l_kolumna)
+                print('Wynik transformacji fl na elipsoidzie GRS80 do układu 2000: ', 'X =', X2000,'Y =', Y2000)
+            
+            elif rodzaj_transformacji == 'fl_GRS80_to_1992':
+                X1992,Y1992 = self.fl_80_2_1992(self.f_kolumna,self.l_kolumna)
+                print('Wynik transformacji fl na elipsoidzie GRS80 do układu 1992: ', 'X =', X1992,'Y =', Y1992)
+            
+            elif rodzaj_transformacji == 'fl_WGS84_to_2000':
+                X2000,Y2000 = self.fl_84_2_2000(self.f_kolumna,self.l_kolumna)
+                print('Wynik transformacji fl na elipsoidzie WGS84 do układu 2000: ', 'X =', X2000,'Y =', Y2000)
+            
+            elif rodzaj_transformacji == 'fl_WGS84_to_1992':
+                X1992,Y1992 = self.fl_84_2_1992(self.f_kolumna,self.l_kolumna)
+                print('Wynik transformacji fl na elipsoidzie WGS80 do układu 1992: ', 'X =', X1992,'Y =', Y1992)
+        return('transformacja ukończona')
+                
     
     
     # funkcje transformacji
@@ -48,23 +75,50 @@ class Transformacje:
         m = int (60*(x-d))
         s = (x - d - m/60)*3600
         print(sig, "%3d %2d %7.5f" %(d,abs(m),abs(s)))
-        
+
+#ta wersja dla pojedynczych X Y Z  
+      
+    # def XYZ_to_flh(self,X,Y,Z):
+    #     a = 6378137
+    #     e2 = 0.00669438002290 
+    #     p = np.sqrt(X**2 + Y**2)
+    #     f = np.arctan(Z/(p*(1-e2)))
+    #     while True:
+    #         N = a/np.sqrt(1-e2*np.sin(f)**2)
+    #         h = (p/np.cos(f))-N
+    #         fp = f
+    #         f = np.arctan(Z/(p*(1-e2*(N/(N+h)))))
+    #         if np.abs(fp - f) < (0.000001/206265):
+    #             break
+    #     l = np.arctan2(Y,X) 
+    #     #self.rad_to_dms(f)
+    #     #self.rad_to_dms(l)
+    #     return(f,l,h)
+    
+# to powinno działać i dla pojedynczych i dla arrayów 
     def XYZ_to_flh(self,X,Y,Z):
         a = 6378137
         e2 = 0.00669438002290 
-        p = np.sqrt(X**2 + Y**2)
-        f = np.arctan(Z/(p*(1-e2)))
+        X = np.array(X)
+        Y = np.array(Y)
+        Z = np.array(Z, dtype=np.float64)
+        p = np.sqrt(np.square(X.astype(np.float64)) + np.square(Y.astype(np.float64)))
+        f = np.arctan(np.divide(Z,(p*(1-e2))).astype(np.float64))
         while True:
             N = a/np.sqrt(1-e2*np.sin(f)**2)
             h = (p/np.cos(f))-N
             fp = f
-            f = np.arctan(Z/(p*(1-e2*(N/(N+h)))))
-            if np.abs(fp - f) < (0.000001/206265):
+            f = np.arctan(np.divide(Z,(p*(1-e2*(N/(N+h))))))
+            if np.all(np.abs(fp - f) < (0.000001/206265)):
                 break
-        l = np.arctan2(Y,X) 
-        self.rad_to_dms(f)
-        self.rad_to_dms(l)
-        return(f,l,h)
+        X = np.array(X).astype(np.float64)
+        Y = np.array(Y).astype(np.float64)
+        l = np.arctan2(Y,X)
+        #self.rad_to_dms(f)
+        #self.rad_to_dms(l)
+        return [f, l, h]
+
+
     
     def flh_to_XYZ(self,f,l,h):
         a = 6378137
@@ -293,7 +347,7 @@ if __name__ == '__main__':
 
     parser_pobranie_wsp = subparsers.add_parser('pobierz_dane', help = 'Pobierz współrzędne do obliczeń z pliku txt')
     parser_pobranie_wsp.add_argument('file_path', help='scieżka do pliku w formacie cos/cos/folder/plik')
-    
+    parser_pobranie_wsp.add_argument('rodzaj_transformacji', help = 'podaj jaki rodzaj transformacji wykonać na załadowanych współrzędnych')
 
     parser_XYZ = subparsers.add_parser('XYZ_to_flh', help='Transformuj XYZ na flh')
     parser_XYZ.add_argument('X', type=float, help='współrzędna X')
@@ -313,20 +367,20 @@ if __name__ == '__main__':
     parser_XYZ_to_neu.add_argument('Z', type=float, help='współrzędna Z')
 
 
-    parser_fl_GRS80_to_GK2000 = subparsers.add_parser('fl_GRS80_to_GK2000', help='Transformuj fl GRS80 na GK2000')
+    parser_fl_GRS80_to_GK2000 = subparsers.add_parser('fl_GRS80_to_2000', help='Transformuj fl GRS80 na 2000')
     parser_fl_GRS80_to_GK2000.add_argument('f', type=float, help='współrzędna fi w stopniach')
     parser_fl_GRS80_to_GK2000.add_argument('l', type=float, help='współrzędna lambda w stopniach')
 
-    parser_fl_GRS80_to_GK1992 = subparsers.add_parser('fl_GRS80_to_GK1992', help='Transformuj fl GRS80 na GK1992')
+    parser_fl_GRS80_to_GK1992 = subparsers.add_parser('fl_GRS80_to_1992', help='Transformuj fl GRS80 na 1992')
     parser_fl_GRS80_to_GK1992.add_argument('f', type=float, help='współrzędna fi w stopniach')
     parser_fl_GRS80_to_GK1992.add_argument('l', type=float, help='współrzędna lambda w stopniach')
 
 
-    parser_fl_WGS84_to_GK2000 = subparsers.add_parser('fl_WGS84_to_GK2000', help='Transformuj fl WGS84 na GK2000')
+    parser_fl_WGS84_to_GK2000 = subparsers.add_parser('fl_WGS84_to_2000', help='Transformuj fl WGS84 na 2000')
     parser_fl_WGS84_to_GK2000.add_argument('f', type=float, help='współrzędna fi w stopniach')
     parser_fl_WGS84_to_GK2000.add_argument('l', type=float, help='współrzędna lambda w stopniach')
 
-    parser_fl_WGS84_to_GK1992 = subparsers.add_parser('fl_WGS84_to_GK1992', help='Transformuj fl WGS84 na GK1992')
+    parser_fl_WGS84_to_GK1992 = subparsers.add_parser('fl_WGS84_to_1992', help='Transformuj fl WGS84 na 1992')
     parser_fl_WGS84_to_GK1992.add_argument('f', type=float, help='współrzędna fi w stopniach')
     parser_fl_WGS84_to_GK1992.add_argument('l', type=float, help='współrzędna lambda w stopniach')
 
@@ -336,20 +390,20 @@ if __name__ == '__main__':
 
 
     if args.operation == 'pobierz_dane':
-        result = transform.pobranie_wsp(args.file_path)
+        result = transform.pobranie_wsp(args.file_path, args.rodzaj_transformacji)
     if args.operation == 'XYZ_to_flh':
         result = transform.XYZ_to_flh(args.X, args.Y, args.Z)
     elif args.operation == 'flh_to_XYZ':
         result = transform.flh_to_XYZ(args.f, args.l, args.h)
     if args.operation == 'XYZ_to_neu':
         result = transform.XYZ_to_neu(args.dX, args.X, args.Y, args.Z)        
-    elif args.operation == 'fl_GRS80_to_GK2000':
+    elif args.operation == 'fl_GRS80_to_2000':
         result = transform.fl_80_2_2000(args.f, args.l)
-    elif args.operation == 'fl_GRS80_to_GK1992':
+    elif args.operation == 'fl_GRS80_to_1992':
         result = transform.fl_80_2_1992(args.f, args.l) 
-    elif args.operation == 'fl_WGS84_to_GK2000':
+    elif args.operation == 'fl_WGS84_to_2000':
         result = transform.fl_84_2_2000(args.f, args.l)
-    elif args.operation == 'fl_WGS84_to_GK1992':
+    elif args.operation == 'fl_WGS84_to_1992':
         result = transform.fl_84_2_1992(args.f, args.l)
 
         
