@@ -61,11 +61,11 @@ class Transformacje:
                 
             
             elif rodzaj_transformacji == 'fl_WGS84_to_2000':
-                X2000,Y2000 = self.fl_84_2_2000(self.f_kolumna,self.l_kolumna)
+                X2000,Y2000 = self.fl_84_2_2000_lista(self.f_kolumna,self.l_kolumna)
                 print('Wynik transformacji fl na elipsoidzie WGS84 do układu 2000: ', 'X =', X2000,'Y =', Y2000)
             
             elif rodzaj_transformacji == 'fl_WGS84_to_1992':
-                X1992,Y1992 = self.fl_84_2_1992(self.f_kolumna,self.l_kolumna)
+                X1992,Y1992 = self.fl_84_2_1992_lista(self.f_kolumna,self.l_kolumna)
                 print('Wynik transformacji fl na elipsoidzie WGS80 do układu 1992: ', 'X =', X1992,'Y =', Y1992)
         return('transformacja ukończona')
                 
@@ -166,23 +166,23 @@ class Transformacje:
         if l < self.dms2rad(15, 00, 00) or l == self.dms2rad(15, 00, 00):
             l0 = self.dms2rad(15, 00, 00)
             nr_strefy = 5
-            print('l0 =', l0,'nr strefy = ', nr_strefy)
+            #print('l0 =', l0,'nr strefy = ', nr_strefy)
         elif l > self.dms2rad(15, 00, 00) and l < self.dms2rad(16, 30, 00):
             l0 = self.dms2rad(15, 00, 00)
             nr_strefy = 5
-            print('l0 =', l0,'nr strefy = ', nr_strefy)
+            #print('l0 =', l0,'nr strefy = ', nr_strefy)
         elif l > self.dms2rad(16, 30, 00) and l < self.dms2rad(19, 30, 00):
             l0 = self.dms2rad(18, 00, 00)
             nr_strefy = 6
-            print('l0 =', l0,'nr strefy = ', nr_strefy)
+            #print('l0 =', l0,'nr strefy = ', nr_strefy)
         elif l > self.dms2rad(19, 30, 00) and l < self.dms2rad(22, 30, 00):
             l0 = self.dms2rad(21, 00, 00)
             nr_strefy = 7
-            print('l0 =', l0,'nr strefy = ', nr_strefy)
+            #print('l0 =', l0,'nr strefy = ', nr_strefy)
         else:
             l0 = self.dms2rad(24, 00, 00)
             nr_strefy = 8
-            print('l0 =', l0,'nr strefy = ', nr_strefy)
+            #print('l0 =', l0,'nr strefy = ', nr_strefy)
         return l0, nr_strefy
     
     def l0_lista(self, f_lista, l_lista):
@@ -371,6 +371,68 @@ class Transformacje:
         Y2000= m0 * Y84_gk_2000 + nr_strefy * 1000000 + 500000
         return(X2000,Y2000)
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    def fl_84_2_2000_lista(self, f_lista, l_lista):
+        l0_list, nr_strefy = self.l0_lista(f_lista, l_lista)
+
+        f_lista = [float(f)/180*np.pi for f in f_lista]
+        l_lista = [float(l)/180*np.pi for l in l_lista]
+
+        # elipsoida wgs84
+        a = 6378137 # m	
+        e2 = 0.00335281068118231893543414612613
+        
+        b2 = a**2 * (1 - e2)
+        e2prim=((a**2) - b2) / b2
+        
+        
+        d_l = [l_lista[i] - l0_list[i] for i in range(len(l_lista))]
+
+        t = np.tan(f_lista)
+        eta2 = e2prim * ((np.cos(f_lista))**2)
+        N = a / np.sqrt(1- e2 * np.sin(f_lista)**2)
+        A0 = 1 - (e2 / 4) - ((3 * (e2**2)) / 64) - ((5 * (e2**3)) / 256)
+        A2 = (3 / 8) * (e2 + ((e2**2) / 4) + (15 * (e2**3)) / 128)
+        A4 = (15 / 256) * (e2**2 + ((3 * (e2**3)) / 4))
+        A6 = (35 * (e2**3)) / 3072
+        
+        f_array = np.array(f_lista)
+        sigma = a * (A0 * f_array - A2 * np.sin(2 * f_array) + A4 * np.sin(4 * f_array) - A6 * np.sin(6 * f_array))
+
+        X_gk_2000 = sigma + ((np.array(d_l)**2) / 2) * N * np.sin(f_lista) * np.cos(f_lista) * (1 + ((np.array(d_l)**2) / 12) * ((np.cos(f_lista))**2) * (5 - (t**2) + 9 * eta2 + 4 * eta2**2) + ((np.array(d_l)**4) / 360) * ((np.cos(f_lista))**4) * (61 - 58 * (t**2) + (t**4) + 270 * eta2 - 330 * eta2 * (t**2)))
+        Y_gk_2000 = np.array(d_l) * N * np.cos(f_lista) * (1 + (((np.array(d_l)**2) / 6) * ((np.cos(f_lista))**2) * (1 - (t**2) + eta2)) + (((np.array(d_l)**4) / 120) * ((np.cos(f_lista))**4) * (5 - 18 * (t**2) + (t**4) + 14 * eta2 - 58 * eta2 * (t**2))))
+
+        m0 = 0.999923
+        X2000 = X_gk_2000 * m0
+        #Y2000 = m0 * Y_gk_2000 + nr_strefy * 1000000 + 500000
+        Y2000 = m0 * Y_gk_2000 + np.repeat(nr_strefy, 1) * 1000000 + 500000
+
+        #Y2000 = [m0 * Y_gk_2000[i] + nr_strefy[i] * 1000000 + 500000 for i in range(len(Y_gk_2000))]
+        return (X2000, Y2000)
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     # z fi lam wgs84 do 1992
     
     def fl_84_2_1992(self, f, l): #f,l w stopniach 
@@ -400,6 +462,46 @@ class Transformacje:
         X1992 = X84_gk_92 * m0 - 5300000
         Y1992 = m0 * Y84_gk_92 + 500000
         return(X1992,Y1992)  
+    
+    
+    
+    def fl_84_2_1992_lista(self, f_lista, l_lista): #f,l w stopniach 
+        l0 = self.dms2rad(19, 00, 00)
+        
+        
+        f_lista = [float(f)/180*np.pi for f in f_lista]
+        l_lista = [float(l)/180*np.pi for l in l_lista]
+        
+        # elipsoida wgs84
+        a = 6378137 # m	
+        e2 = 0.00335281068118231893543414612613
+        
+        b2 = a**2 * (1 - e2)
+        e2prim=((a**2) - b2) / b2
+        d_l = l_lista - l0
+        t = np.tan(f_lista)
+        eta2 = e2prim * ((np.cos(f_lista))**2)
+        N = a / np.sqrt(1- e2 * np.sin(f_lista)**2)
+        A0 = 1 - (e2 / 4) - ((3 * (e2**2)) / 64) - ((5 * (e2**3)) / 256)
+        A2 = (3 / 8) * (e2 + ((e2**2) / 4) + (15 * (e2**3)) / 128)
+        A4 = (15 / 256) * (e2**2 + ((3 * (e2**3)) / 4))
+        A6 = (35 * (e2**3)) / 3072
+        sigma = [a * (A0 * f - A2 * np.sin(2 * f) + A4 * np.sin(4 * f) - A6 * np.sin(6 * f)) for f in f_lista]
+
+        #sigma = a * (A0 * f_lista - A2 * np.sin(2 * f_lista) + A4 * np.sin(4 * f_lista) - A6 * np.sin(6 * f_lista))
+        X_gk_92 = sigma + ((d_l**2) / 2) * N * np.sin(f_lista) * np.cos(f_lista) * (1 + ((d_l**2) / 12) * ((np.cos(f_lista))**2) * (5 - (t**2) + 9 * eta2 + 4 * eta2**2) + ((d_l**4) / 360) * ((np.cos(f_lista))**4) * (61 - 58 * (t**2) + (t**4) + 270 * eta2 - 330 * eta2 * (t**2)))
+        Y_gk_92 = d_l * N * np.cos(f_lista) * (1 + ((d_l**2) / 6) * ((np.cos(f_lista))**2) * (1 - (t**2) + eta2) + ((d_l**4) / 120) * ((np.cos(f_lista))**4) * (5 - 18 * (t**2) + (t**4) + 14 * eta2 - 58 * eta2 * (t**2)))
+        # do 1992
+        m0 = 0.9993
+        X1992 = X_gk_92 * m0 - 5300000
+        Y1992 = m0 * Y_gk_92 + 500000
+        return X1992, Y1992
+
+    
+    
+    
+    
+    
     
     
     
@@ -460,10 +562,25 @@ if __name__ == '__main__':
     parser_fl_WGS84_to_GK2000 = subparsers.add_parser('fl_WGS84_to_2000', help='Transformuj fl WGS84 na 2000')
     parser_fl_WGS84_to_GK2000.add_argument('f', type=float, help='współrzędna fi w stopniach')
     parser_fl_WGS84_to_GK2000.add_argument('l', type=float, help='współrzędna lambda w stopniach')
+    
+    parser_fl_WGS84_to_GK2000_lista = subparsers.add_parser('fl_WGS84_to_2000_lista', help='Transformuj fl WGS84 na 2000')
+    parser_fl_WGS84_to_GK2000_lista.add_argument('f_lista', type=float, help='lista współrzędny fi w stopniach')
+    parser_fl_WGS84_to_GK2000_lista.add_argument('l_lista', type=float, help='lista współrzędnych lambda w stopniach')
+    
+    
+
 
     parser_fl_WGS84_to_GK1992 = subparsers.add_parser('fl_WGS84_to_1992', help='Transformuj fl WGS84 na 1992')
     parser_fl_WGS84_to_GK1992.add_argument('f', type=float, help='współrzędna fi w stopniach')
     parser_fl_WGS84_to_GK1992.add_argument('l', type=float, help='współrzędna lambda w stopniach')
+    
+    parser_fl_WGS84_to_GK1992_lista = subparsers.add_parser('fl_WGS84_to_1992_lista', help='Transformuj fl WGS84 na 1992')
+    parser_fl_WGS84_to_GK1992_lista.add_argument('f_lista', type=float, help='lista współrzędny fi w stopniach')
+    parser_fl_WGS84_to_GK1992_lista.add_argument('l_lista', type=float, help='lista współrzędny lamdba w stopniach')
+    
+    
+    
+    
 
     args = parser.parse_args()
 
@@ -474,8 +591,8 @@ if __name__ == '__main__':
         result = transform.pobranie_wsp(args.file_path, args.rodzaj_transformacji)
     elif args.operation == 'XYZ_to_flh':
         f,l,h = transform.XYZ_to_flh(args.X, args.Y, args.Z)
-        print("Szerokość geodezyjna: ", f, "rad")
-        print("Długość geodezyjna: ", l, "rad")
+        print("Szerokość geodezyjna: ", f*180/np.pi, "°")
+        print("Długość geodezyjna: ", l*180/np.pi, "°")
         print("Wysokość geodezyjna: ", h)    
     elif args.operation == 'flh_to_XYZ':
         X,Y,Z = transform.flh_to_XYZ(args.f, args.l, args.h)
@@ -521,10 +638,29 @@ if __name__ == '__main__':
         X2000,Y2000 = transform.fl_84_2_2000(args.f, args.l)
         print("Współrzędna X2000: ", X2000)
         print("Współrzędna Y2000: ", Y2000)
+        
+    elif args.operation == 'fl_WGS84_to_2000_lista':
+        X2000,Y2000 = transform.fl_84_2_2000_lista(args.f_lista, args.l_lista)
+        print("Lista współrzędnych X2000: ", X2000)
+        print("lista współrzędnych Y2000: ", Y2000)
+        
+        
+        #fl_84_2_2000_lista
+        
+        
+        
     elif args.operation == 'fl_WGS84_to_1992':
         X1992,Y1992 = transform.fl_84_2_1992(args.f, args.l)
         print("Współrzędna X1992: ", X1992)
         print("Współrzędna Y1992: ", Y1992)
+        
+    elif args.operation == 'fl_WGS84_to_1992_lista':
+        X1992,Y1992 = transform.fl_84_2_1992_lista(args.f_lista, args.l_lista)
+        print("Lista współrzędnych X1992: ", X1992)
+        print("Lista współrzędnych Y1992: ", Y1992)
+       
+        
+        
     else:
         print("Proszę wybrać poprawną opcję")
 
