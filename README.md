@@ -16,7 +16,7 @@ Moduł Transformacje zawiera metody: XYZ_to_flh, flh_to_XYZ XYZ_to_neu, fl_80_2_
 - [fl_80_2_gk1992](#fl_80_2_gk1992)
 - [fl_84_2_gk2000](#fl_84_2_gk2000)
 - [fl_84_2_gk1992](#fl_84_2_gk1992)
-- [Przykłady używania funkcji](#Przykłady-używania-funkcji)
+- [Instrukcja używania funkcji](#instrukcja-używania-funkcji)
 
 
 ## Do zainstalowania
@@ -198,7 +198,27 @@ X1992 (typ:float) - płaską współrzędną X w układzie Gaussa-Krüger 1992
 
 Y1992 (typ:float) - płaską współrzędną Y w układzie Gaussa-Krüger 1992
 
-## Przykłady używania funkcji
+## Instrukcja używania funkcji
+Aby zainstalować skrypt Pythona zawierający klasy i definicje z transformacjami geodezyjnymi, należy wykonać następujące kroki:
+
+1. Pobierz kod źródłowy skryptu z repozytorium Github.
+
+2. Zainstaluj Pythona na swoim komputerze, jeśli jeszcze go nie masz (werscja Pythona 3.9).
+
+3. Otwórz wiersz poleceń (cmd) i przejdź do katalogu, w którym znajduje się skrypt.
+
+4. Użyj polecenia "pip install nazwa_biblioteki" (gdzie "nazwa_biblioteki" to nazwa biblioteki, którą chcesz zainstalowa), aby zainstalować wszystkie wymagane biblioteki.
+
+  Przykład:
+  
+    pip install numpy
+
+Po wykonaniu tych kroków, skrypt będzie gotowy do użycia.
+
+Aby użyć skryptu, można wprowadzać pojedyncze dane przez wiersz poleceń lub użyć pliku z danymi. W przypadku pojedynczych danych, należy uruchomić skrypt i wprowadzić dane ręcznie w konsoli. W przypadku użycia pliku z danymi, należy umieścić dane w pliku tekstowym, oddzielając je spacjami, a następnie przekazać nazwę pliku jako argument do skryptu.
+
+Przykład użycia skryptu z pojedynczymi danymi:
+
 - W programie Spyder (Python 3.9.13):
         
         from skrypt.py import fl_80_2_gk2000
@@ -215,6 +235,11 @@ Y1992 (typ:float) - płaską współrzędną Y w układzie Gaussa-Krüger 1992
 
 ![Example screenshot](/Użycie_def.png)
 
+Przykład użycia skryptu z danymi z pliku:
+
+Zamiast pojedynczych danych trzeba podać plik z danymi.
+  
+    python skrypt.py dane.txt
 
 
 
