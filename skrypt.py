@@ -29,46 +29,78 @@ class Transformacje:
             self.f_kolumna = [row[0] for row in self.wspolrzedne]
             self.l_kolumna = [row[1] for row in self.wspolrzedne]
             self.h_kolumna = [row[2] for row in self.wspolrzedne]
+            self.dx_kolumna = [row[-1] for row in self.wspolrzedne]
                 #return(f_kolumna,l_kolumna,h_kolumna)
             
             if rodzaj_transformacji == 'XYZ_to_flh':
                 f,l,h = self.XYZ_to_flh(self.f_kolumna, self.l_kolumna, self.h_kolumna) 
                 wynik = np.array([f,l,h])
                 wynik = np.transpose(wynik)
+                wynik1 = np.column_stack((wynik))
+                print('wynik',wynik1)
+                self.zapisz(wynik1, 'wyniki_XYZ_to_flh', 'Wyniki transformacji: współrzędne f,l,h')
                 print('')
                 print('Wynik transformacji XYZ do flh: ', wynik)
             
            
-            
             elif rodzaj_transformacji == 'flh_to_XYZ':
                 X,Y,Z = self.flh_to_XYZ(self.f_kolumna, self.l_kolumna, self.h_kolumna)
-                print('Wynik transformacji flh do XYZ: ', 'X =', X,'Y =', Y, 'Z =', Z)
+                wynik = np.column_stack((X,Y,Z))
+                #print('wynik',wynik)
+                self.zapisz(wynik, 'wyniki_flh_to_XYZ', 'Wyniki transformacji: współrzędne X, Y, Z')
+                #print('Wynik transformacji flh do XYZ: ', 'X =', X,'Y =', Y, 'Z =', Z)
                 
-                # neu idk jak
+    # NEU
+            elif rodzaj_transformacji == "XYZ_to_neu":
+                neu = self.XYZ_to_neu_lista(self.dx_kolumna,self.f_kolumna, self.l_kolumna, self.h_kolumna)
+                wynik = np.column_stack((neu))
+                print('wynik',wynik)
+                self.zapisz(wynik, 'wyniki_XYZ_2_neu', 'Wyniki transformacji neu:')
+                print('Wynik transformacji XYZ do neu: ', neu)
+                
                 
             elif rodzaj_transformacji == 'fl_GRS80_to_2000':
                 X2000,Y2000 = self.fl_80_2_2000_lista(self.f_kolumna,self.l_kolumna)
-                print('Wynik transformacji fl na elipsoidzie GRS80 do układu 2000: ', 'X =', X2000,'Y =', Y2000)
+                wynik = np.column_stack((X2000,Y2000))
+                #print('wynik',wynik)
+                self.zapisz(wynik, 'wyniki_fl_GRS80_2_2000', 'Wyniki transformacji: współrzędne X, Y w układzie 2000')
+                #print('Wynik transformacji fl na elipsoidzie GRS80 do układu 2000: ', 'X =', X2000,'Y =', Y2000)
            
             
             elif rodzaj_transformacji == 'fl_GRS80_to_1992':
                 X1992,Y1992 = self.fl_80_2_1992_lista(self.f_kolumna,self.l_kolumna)
-                print('Wynik transformacji fl na elipsoidzie GRS80 do układu 1992: ', 'X =', X1992,'Y =', Y1992)
+                wynik = np.column_stack((X1992,Y1992))
+                #print('wynik',wynik)
+                self.zapisz(wynik, 'wyniki_fl_GRS80_2_1992', 'Wyniki transformacji: współrzędne X, Y w układzie 1992')
+                #print('Wynik transformacji fl na elipsoidzie GRS80 do układu 1992: ', 'X =', X1992,'Y =', Y1992)
                 
-                     
-                # do tego momentu działa
-                
-                
+  
             
             elif rodzaj_transformacji == 'fl_WGS84_to_2000':
                 X2000,Y2000 = self.fl_84_2_2000_lista(self.f_kolumna,self.l_kolumna)
-                print('Wynik transformacji fl na elipsoidzie WGS84 do układu 2000: ', 'X =', X2000,'Y =', Y2000)
+                wynik = np.column_stack((X2000,Y2000))
+                #print('wynik',wynik)
+                self.zapisz(wynik, 'wyniki_fl_WGS84_2_2000', 'Wyniki transformacji: współrzędne X, Y w układzie 2000')
+                #print('Wynik transformacji fl na elipsoidzie WGS84 do układu 2000: ', 'X =', X2000,'Y =', Y2000)
             
             elif rodzaj_transformacji == 'fl_WGS84_to_1992':
                 X1992,Y1992 = self.fl_84_2_1992_lista(self.f_kolumna,self.l_kolumna)
-                print('Wynik transformacji fl na elipsoidzie WGS80 do układu 1992: ', 'X =', X1992,'Y =', Y1992)
-        return('transformacja ukończona')
+                wynik = np.column_stack((X1992,Y1992))
+                print('wynik',wynik)
+                self.zapisz(wynik, 'wyniki_fl_WGS84_2_1992', 'Wyniki transformacji: współrzędne X, Y w układzie 1992')
+                #print('Wynik transformacji fl na elipsoidzie WGS80 do układu 1992: ', 'X =', X1992,'Y =', Y1992)
+            else:
+                print('Podaj własciwą nazwę transformacji: „XYZ_to_flh”  „flh_to_XYZ”  „XYZ_to_neu”  “fl_GRS80_to_2000”  “fl_GRS80_to_1992”  “fl_WGS84_to_2000” lub „fl_WGS84_to_1992”')
+            
                 
+    
+    
+    def zapisz(self, wynik, filename, header):
+        with open(filename, "w") as f:
+            f.write(header + "\n" + "\n")
+            np.savetxt(f, wynik, delimiter=",", fmt="%.5f", newline='\n')
+            print('Wyniki zostały zapisane w pliku o nazwie:', filename)
+    
     
     
     # funkcje transformacji
@@ -87,6 +119,8 @@ class Transformacje:
 
     
 # to powinno działać i dla pojedynczych i dla arrayów 
+
+# cos tu n działa 
     def XYZ_to_flh(self,X,Y,Z):
         a = 6378137
         e2 = 0.00669438002290 
@@ -128,7 +162,6 @@ class Transformacje:
         return (X, Y, Z)
     
     
-    # idk jak neu
 
     def XYZ_to_neu(self,dX,X,Y,Z):
         a = 6378137
@@ -147,6 +180,31 @@ class Transformacje:
                       [-np.sin(f)*np.sin(l), np.cos(l), np.cos(f)*np.sin(l)],
                       [np.cos(f), 0, np.sin(f)]])       
         return(R.T @ dX)
+    
+
+    def XYZ_to_neu_lista(self, dX, X, Y, Z):
+        a = 6378137
+        e2 = 0.00669438002290 
+        p = np.sqrt(np.array(X).astype(np.float64)**2 + np.array(Y).astype(np.float64)**2)
+        f = np.arctan(np.array(Z).astype(np.float64)/(p*(1-e2)))
+        while True:
+            N = a/np.sqrt(1-e2*np.sin(f)**2)
+            h = (p/np.cos(f))-N
+            fp = f
+            f = np.arctan(np.array(Z).astype(np.float64)/(p*(1-e2*(N.astype(np.float64)/(N.astype(np.float64)+h.astype(np.float64))))))
+            if np.all(np.abs(fp - f) < (0.000001/206265)):
+                break
+        l = np.arctan2(np.array(Y).astype(np.float64), np.array(X).astype(np.float64))
+        n = len(dX)
+        R = np.zeros((3, 3*n))
+        for i in range(n):
+            f_i, l_i = f[i], l[i]
+            R[:, 3*i:3*i+3] = np.array([[-np.sin(f_i)*np.cos(l_i), -np.sin(l_i), np.cos(f_i)*np.cos(l_i)],
+                                        [-np.sin(f_i)*np.sin(l_i), np.cos(l_i), np.cos(f_i)*np.sin(l_i)],
+                                        [np.cos(f_i), 0, np.sin(f_i)]])
+        dX = np.array(dX, dtype=float)
+        #return (dX @ R)
+        return(dX @ R.T)
 
 
     # funkcja do zamieniania stopni min sek na przecinkowe stopnie
@@ -516,6 +574,12 @@ if __name__ == '__main__':
     parser_pobranie_wsp.add_argument('file_path', help='scieżka do pliku w formacie cos/cos/folder/plik')
     parser_pobranie_wsp.add_argument('rodzaj_transformacji', help = 'podaj jaki rodzaj transformacji wykonać na załadowanych współrzędnych')
 
+    parser_zapisz = subparsers.add_parser('zapisz_dane', help = 'zapisz dane do pliku txt w obecnym folderze')
+    parser_zapisz.add_argument('wynik', help = 'wyniki transformacji')
+    parser_zapisz.add_argument('filename', help = 'nazwa pliku')
+    parser_zapisz.add_argument('header', help = 'pierwszy wiersz w pliku')
+
+
     parser_XYZ = subparsers.add_parser('XYZ_to_flh', help='Transformuj XYZ na flh')
     parser_XYZ.add_argument('X', type=float, help='współrzędna X')
     parser_XYZ.add_argument('Y', type=float, help='współrzędna Y')
@@ -533,6 +597,11 @@ if __name__ == '__main__':
     parser_XYZ_to_neu.add_argument('Y', type=float, help='współrzędna Y')
     parser_XYZ_to_neu.add_argument('Z', type=float, help='współrzędna Z')
 
+    parser_XYZ_to_neu_lista = subparsers.add_parser('XYZ_to_neu_lista', help='Transformuj XYZ na neu')
+    parser_XYZ_to_neu_lista.add_argument('lista dX', type=float, help='delta X')
+    parser_XYZ_to_neu_lista.add_argument('lista X', type=float, help='lista współrzędnych X')
+    parser_XYZ_to_neu_lista.add_argument('lista Y', type=float, help='lista współrzędnych Y')
+    parser_XYZ_to_neu_lista.add_argument('lista Z', type=float, help='lista współrzędnych Z')
 
 
 
@@ -598,12 +667,16 @@ if __name__ == '__main__':
         X,Y,Z = transform.flh_to_XYZ(args.f, args.l, args.h)
         print("Współrzędna X: ", X)
         print("Współrzędna Y: ", Y)
-        print("Współrzędna Z: ", Z)    
+        print("Współrzędna Z: ", Z)   
+        
+        
     elif args.operation == 'XYZ_to_neu':
         result = transform.XYZ_to_neu(args.dX, args.X, args.Y, args.Z) 
         print("Współrzędne neu", result)
         
-        
+    elif args.operation == 'XYZ_to_neu_lista':
+        result = transform.XYZ_to_neu(args.dX, args.X, args.Y, args.Z) 
+        print("Współrzędne neu", result)        
         
         
     elif args.operation == 'fl_GRS80_to_2000':
@@ -633,7 +706,6 @@ if __name__ == '__main__':
         
         
         
-        
     elif args.operation == 'fl_WGS84_to_2000':
         X2000,Y2000 = transform.fl_84_2_2000(args.f, args.l)
         print("Współrzędna X2000: ", X2000)
@@ -643,9 +715,6 @@ if __name__ == '__main__':
         X2000,Y2000 = transform.fl_84_2_2000_lista(args.f_lista, args.l_lista)
         print("Lista współrzędnych X2000: ", X2000)
         print("lista współrzędnych Y2000: ", Y2000)
-        
-        
-        #fl_84_2_2000_lista
         
         
         
@@ -662,7 +731,7 @@ if __name__ == '__main__':
         
         
     else:
-        print("Proszę wybrać poprawną opcję")
+        print("Proszę wprowadzić nazwę operacji z podanych: XYZ_to_flh, flh_to_XYZ, XYZ_to_neu, fl_GRS80_to_2000, fl_GRS80_to_1992, fl_WGS84_to_2000, fl_WGS84_to_1992 ")
 
 
 
