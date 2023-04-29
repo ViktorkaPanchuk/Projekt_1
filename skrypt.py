@@ -162,23 +162,24 @@ class Transformacje:
     
     
 
-    # def XYZ_to_neu(self,dX,X,Y,Z):
-    #     a = 6378137
-    #     e2 = 0.00669438002290 
-    #     p = np.sqrt(X**2 + Y**2)
-    #     f = np.arctan(Z/(p*(1-e2)))
-    #     while True:
-    #         N = a/np.sqrt(1-e2*np.sin(f)**2)
-    #         h = (p/np.cos(f))-N
-    #         fp = f
-    #         f = np.arctan(Z/(p*(1-e2*(N/(N+h)))))
-    #         if np.abs(fp - f) < (0.000001/206265):
-    #             break
-    #     l = np.arctan2(Y,X)
-    #     R = np.array([[-np.sin(f)*np.cos(l), -np.sin(l), np.cos(f)*np.cos(l)],
-    #                   [-np.sin(f)*np.sin(l), np.cos(l), np.cos(f)*np.sin(l)],
-    #                   [np.cos(f), 0, np.sin(f)]])       
-    #     return(R.T @ dX)
+    def XYZ_to_neu(self,dx,dy,dz,X,Y,Z):
+        a = 6378137
+        e2 = 0.00669438002290 
+        p = np.sqrt(X**2 + Y**2)
+        f = np.arctan(Z/(p*(1-e2)))
+        delta_wsp = np.hstack((dx,dy,dz))
+        while True:
+            N = a/np.sqrt(1-e2*np.sin(f)**2)
+            h = (p/np.cos(f))-N
+            fp = f
+            f = np.arctan(Z/(p*(1-e2*(N/(N+h)))))
+            if np.abs(fp - f) < (0.000001/206265):
+                break
+        l = np.arctan2(Y,X)
+        R = np.array([[-np.sin(f)*np.cos(l), -np.sin(l), np.cos(f)*np.cos(l)],
+                      [-np.sin(f)*np.sin(l), np.cos(l), np.cos(f)*np.sin(l)],
+                      [np.cos(f), 0, np.sin(f)]])       
+        return(R.T @ delta_wsp)
     
 
     # def XYZ_to_neu_lista(self, dX, X, Y, Z):
@@ -213,31 +214,7 @@ class Transformacje:
         # self.a = a
         # self.e2 = e2
     
-    def XYZ_to_neu(self, X, Y, Z,dX):
-        e2=0.00669438002290
-        p = np.sqrt(X**2 + Y**2)
-        f = np.arctan(Z/(p*(1-e2)))
-        while True:
-            N = self.Np(f)
-            h = (p/np.cos(f))-N
-            fp = f
-            f = np.arctan(Z/(p*(1-e2*(N/(N+h)))))
-            if np.abs(fp - f) < (0.000001/206265):
-                break
-        l = np.arctan2(Y,X)
-        R = self.Rneu(f, l)
-        # dneu = R.T @ dX
-        # return dneu
-        dX_col = np.array(dX).reshape(-1, 1)
 
-        dneu = R.T @ dX_col
-        return dneu.flatten()
-    
-    def Np(self, f):
-        a=6378137
-        e2=0.00669438002290
-        N = a / np.sqrt(1-e2 * (np.sin(f))**2)
-        return N
 
     def Rneu(self, f, l):
         R = np.array([[-np.sin(f)*np.cos(l), -np.sin(l), np.cos(f)*np.cos(l)],
@@ -650,7 +627,9 @@ if __name__ == '__main__':
 
 
     parser_XYZ_to_neu = subparsers.add_parser('XYZ_to_neu', help='Transformuj XYZ na neu')
-    parser_XYZ_to_neu.add_argument('dX', type=float, help='delta X')
+    parser_XYZ_to_neu.add_argument('dx', type=float, help='delta X')
+    parser_XYZ_to_neu.add_argument('dy', type=float, help='delta Y')
+    parser_XYZ_to_neu.add_argument('dz', type=float, help='delta Z')
     parser_XYZ_to_neu.add_argument('X', type=float, help='współrzędna X')
     parser_XYZ_to_neu.add_argument('Y', type=float, help='współrzędna Y')
     parser_XYZ_to_neu.add_argument('Z', type=float, help='współrzędna Z')
@@ -730,7 +709,7 @@ if __name__ == '__main__':
         
         
     elif args.operation == 'XYZ_to_neu':
-        result = transform.XYZ_to_neu(args.dX, args.X, args.Y, args.Z) 
+        result = transform.XYZ_to_neu(args.dx, args.dy, args.dz, args.X, args.Y, args.Z) 
         print("Współrzędne neu", result)
         
     elif args.operation == 'XYZ_to_neu_lista':
