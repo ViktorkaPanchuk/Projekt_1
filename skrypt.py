@@ -11,8 +11,6 @@ class Transformacje:
         
     def __init__(self):
         self.wspolrzedne = []
-
-
     def pobranie_wsp(self, file_path, rodzaj_transformacji):
         self.f_kolumna = []
         self.l_kolumna = []
@@ -52,13 +50,6 @@ class Transformacje:
                 wynik = np.column_stack((XYZ_neu))
                 self.zapisz(wynik, 'wyniki_XYZ_2_neu', 'Wyniki transformacji neu:')
                 print('Wynik transformacji XYZ do neu: ', XYZ_neu)
-                
-            elif rodzaj_transformacji == "XYZ_to_neu":
-                neu = self.XYZ_to_neu_lista(self.f_kolumna, self.l_kolumna, self.h_kolumna,self.dx_kolumna,self.dy_kolumna,self.dz_kolumna,)
-                wynik = np.column_stack((neu))
-                print('wynik',wynik)
-                self.zapisz(wynik, 'wyniki_XYZ_2_neu', 'Wyniki transformacji neu:')
-                print('Wynik transformacji XYZ do neu: ', neu)
                 
             elif rodzaj_transformacji == 'fl_GRS80_to_2000':
                 X2000,Y2000 = self.fl_80_2_2000_lista(self.f_kolumna,self.l_kolumna)
