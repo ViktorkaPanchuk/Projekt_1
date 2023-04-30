@@ -1,7 +1,9 @@
 # Projekt_1
 
 # Transformacje - dokumentacja
-Moduł Transformacje zawiera metody: XYZ_to_flh, flh_to_XYZ XYZ_to_neu, fl_80_2_gk2000, fl_80_2_gk1992, fl_84_2_gk2000, fl_84_2_gk1992
+**Moduł Transformacje zawiera metody: XYZ_to_flh, flh_to_XYZ XYZ_to_neu, fl_80_2_gk2000, fl_80_2_gk1992, fl_84_2_gk2000, fl_84_2_gk1992**. 
+
+Funkcje wykorzystują się dla transformacji pojedynczych punktów albo przekształcania danych z pliku wejściowego
 
 ## Spis treści:
 - [Do zainstalowania](#do-zainstalowania)
@@ -79,13 +81,17 @@ Funkcja przelicza zmiany we współrzędnych XYZ na zmiany wzdłuż północnego
 
 - Argumenty:
 
-dX (typ:list) - wektor zmian we współrzędnych X, Y i Z
-
 X (typ:float) - wartość współrzędnej X w układzie kartezjańskim.
 
 Y (typ:float) - wartość współrzędnej X w układzie kartezjańskim.
 
 Z (typ:float) - wartość współrzędnej X w układzie kartezjańskim.
+
+dx (typ:float) - delta X
+
+dy (typ:float) - delta Y
+
+dz (typ:float) - delta Z
 
 - Zwraca:
 
@@ -128,7 +134,6 @@ Funkcja lambda0_2000 służy do wyznaczenia długości geograficznej punktu cent
 - Argumenty:
 
 l_deg (typ:float) - wartość długości geograficznej punktu, podana w stopniach dziesiętnych.
-
 
 - Zwraca: 
 
@@ -215,11 +220,11 @@ Aby zainstalować skrypt Pythona zawierający klasy i definicje z transformacjam
 
 Po wykonaniu tych kroków, skrypt będzie gotowy do użycia.
 
-Aby użyć skryptu, można wprowadzać pojedyncze dane przez wiersz poleceń lub użyć pliku z danymi. W przypadku pojedynczych danych, należy uruchomić skrypt i wprowadzić dane ręcznie w konsoli. W przypadku użycia pliku z danymi, należy umieścić dane w pliku tekstowym, oddzielając je spacjami, a następnie przekazać nazwę pliku jako argument do skryptu.
+Aby użyć skryptu, można wprowadzać pojedyncze dane przez wiersz poleceń lub użyć pliku z danymi. W przypadku pojedynczych danych, należy uruchomić skrypt i wprowadzić dane ręcznie w konsoli. W przypadku użycia pliku z danymi, należy umieścić dane w pliku tekstowym, oddzielając je przecinkami bez spacji w kolejności **f,l,h (X,Y,Z)**, a następnie wpisać nazwę pliku z rozszerzeniem (jeśli plik z danymi znajduje się jednym folderze ze skryptem) albo podać ścieżkę do pliku, po czym wpisać nazwę metody transformacji.
 
 Przykład użycia skryptu z pojedynczymi danymi:
 
-- W programie Spyder (Python 3.9.13):
+- **W programie Spyder (Python 3.9.13):**
         
         from skrypt.py import fl_80_2_gk2000
 
@@ -231,16 +236,50 @@ Przykład użycia skryptu z pojedynczymi danymi:
         print("X: ", X)
         print("Y: ", Y)
 
-- Przez wiersz poleceń:
+- **Przez wiersz poleceń:**
 
-![Example screenshot](/Użycie_def.png)
+![Example screenshot](/screens/flh_2_XYZ.png)
+
+- [ ] **Gdzie:**
+
+  - "C:\Users\vikto\OneDrive\Dokumenty\Geodezja\Informatyka_II\Projekty\Projekt_1" - ścieżka do skryptu
+   
+  - "python" - program, przy pomocy którego uruchamiamy skrypt
+   
+  - "skrupt.py" - nazwa skryptu, który będzie uruchomiony _albo_ ścieżka do skryptu
+   
+  - "flh_to_XYZ" - nazwa transformacji, którą chcemy wykonać
+   
+  - "51 21 100" - dane (w tym przypadku flh), które będą transformowane
 
 Przykład użycia skryptu z danymi z pliku:
 
 Zamiast pojedynczych danych trzeba podać plik z danymi.
   
-    python skrypt.py dane.txt
+![Example screenshot](/screens/XYZ_to_neu.png)
 
+- [ ] **Gdzie:**
+
+  - "C:\Users\vikto\OneDrive\Dokumenty\Geodezja\Informatyka_II\Projekty\Projekt_1" - ścieżka do skryptu
+   
+  - "python" - program, przy pomocy którego uruchamiamy skrypt
+   
+  - "skrupt.py" - nazwa skryptu, który będzie uruchomiony **albo** ścieżka do skryptu
+   
+  - "pobierz_dane" - polecenie, którego używamy do pobierania danych z pliku .txt
+   
+  - "neu.txt" - nazwa pliku, z którego pobieramy dane _albo_ ścieżka do pliku
+  
+  - "XYZ_to_neu" - nazwa transformacji, którą chcemy wykonać
+  
+![Example screenshot](/screens/in.png)
+
+&uarr; Plik wejściowy:
+
+
+&darr; Plik wyjściowy:
+
+![Example screenshot](/screens/out.png)
 
 
 
