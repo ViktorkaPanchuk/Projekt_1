@@ -37,43 +37,37 @@ class Transformacje:
                 wynik = np.transpose(wynik)
                 wynik1 = np.column_stack((wynik))
                 self.zapisz(wynik1, 'wyniki_XYZ_to_flh', 'Wyniki transformacji: współrzędne f,l,h')
-                print('Wynik transformacji XYZ do flh: ', wynik)
             
             elif rodzaj_transformacji == 'flh_to_XYZ':
                 X,Y,Z = self.flh_to_XYZ(self.f_kolumna, self.l_kolumna, self.h_kolumna)
                 wynik = np.column_stack((X,Y,Z))
                 self.zapisz(wynik, 'wyniki_flh_to_XYZ', 'Wyniki transformacji: współrzędne X, Y, Z')
-                print('Wynik transformacji flh do XYZ: ', 'X =', X,'Y =', Y, 'Z =', Z)
 
             elif rodzaj_transformacji == "XYZ_to_neu":
                 XYZ_neu = self.XYZ_to_neu_lista(self.f_kolumna, self.l_kolumna, self.h_kolumna,self.dx_kolumna,self.dy_kolumna,self.dz_kolumna,)
                 wynik = np.column_stack((XYZ_neu))
                 self.zapisz(wynik, 'wyniki_XYZ_2_neu', 'Wyniki transformacji neu:')
-                print('Wynik transformacji XYZ do neu: ', XYZ_neu)
                 
             elif rodzaj_transformacji == 'fl_GRS80_to_2000':
                 X2000,Y2000 = self.fl_80_2_2000_lista(self.f_kolumna,self.l_kolumna)
                 wynik = np.column_stack((X2000,Y2000))
                 self.zapisz(wynik, 'wyniki_fl_GRS80_2_2000', 'Wyniki transformacji: współrzędne X, Y w układzie 2000')
-                print('Wynik transformacji fl na elipsoidzie GRS80 do układu 2000: ', 'X =', X2000,'Y =', Y2000)
             
             elif rodzaj_transformacji == 'fl_GRS80_to_1992':
                 X1992,Y1992 = self.fl_80_2_1992_lista(self.f_kolumna,self.l_kolumna)
                 wynik = np.column_stack((X1992,Y1992))
                 self.zapisz(wynik, 'wyniki_fl_GRS80_2_1992', 'Wyniki transformacji: współrzędne X, Y w układzie 1992')
-                print('Wynik transformacji fl na elipsoidzie GRS80 do układu 1992: ', 'X =', X1992,'Y =', Y1992)
                 
             elif rodzaj_transformacji == 'fl_WGS84_to_2000':
                 X2000,Y2000 = self.fl_84_2_2000_lista(self.f_kolumna,self.l_kolumna)
                 wynik = np.column_stack((X2000,Y2000))
                 self.zapisz(wynik, 'wyniki_fl_WGS84_2_2000', 'Wyniki transformacji: współrzędne X, Y w układzie 2000')
-                print('Wynik transformacji fl na elipsoidzie WGS84 do układu 2000: ', 'X =', X2000,'Y =', Y2000)
             
             elif rodzaj_transformacji == 'fl_WGS84_to_1992':
                 X1992,Y1992 = self.fl_84_2_1992_lista(self.f_kolumna,self.l_kolumna)
                 wynik = np.column_stack((X1992,Y1992))
                 self.zapisz(wynik, 'wyniki_fl_WGS84_2_1992', 'Wyniki transformacji: współrzędne X, Y w układzie 1992')
-                print('Wynik transformacji fl na elipsoidzie WGS80 do układu 1992: ', 'X =', X1992,'Y =', Y1992)
+            
             else:
                 print('Podaj własciwą nazwę transformacji: „XYZ_to_flh”  „flh_to_XYZ”  „XYZ_to_neu”  “fl_GRS80_to_2000”  “fl_GRS80_to_1992”  “fl_WGS84_to_2000” lub „fl_WGS84_to_1992”')
             
