@@ -322,7 +322,7 @@ rodziaj_tranfsormacji - wybrany z podanych: XYZ_to_flh, flh_to_XYZ, XYZ_to_neu, 
   wynik - jest to np.array złożony z tylu kolumn ile wartości zwraca wybrana transformacja, który funkcja zapisz zapisuje w zewnętrznym pliku.
 
 ## Funkcja zapisz
-Funkcja ta jest zaimplementowana wewnątrz funkcji pobieranie_danych. Jej argumenty są z góry podane dla każdej z możliwych transformacji. Funkcja ta zapisuje wyniki danej transformacji w pliku tekstowym, w folderze w którym znajduje się program.
+Funkcja ta jest zaimplementowana wewnątrz funkcji pobieranie_wsp. Jej argumenty są z góry podane dla każdej z możliwych transformacji. Funkcja ta zapisuje wyniki danej transformacji w pliku tekstowym, w folderze w którym znajduje się program.
 
 - Argumenty:
 
