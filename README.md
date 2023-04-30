@@ -18,6 +18,7 @@ Funkcje wykorzystują się dla transformacji pojedynczych punktów albo przekszt
 - [fl_80_2_gk1992](#fl_80_2_gk1992)
 - [fl_84_2_gk2000](#fl_84_2_gk2000)
 - [fl_84_2_gk1992](#fl_84_2_gk1992)
+- [Funkcje dla list współrzędnych](##Funkcje dla list współrzędnych)
 - [Instrukcja używania funkcji](#instrukcja-używania-funkcji)
 
 
@@ -83,9 +84,9 @@ Funkcja przelicza zmiany we współrzędnych XYZ na zmiany wzdłuż północnego
 
 X (typ:float) - wartość współrzędnej X w układzie kartezjańskim.
 
-Y (typ:float) - wartość współrzędnej X w układzie kartezjańskim.
+Y (typ:float) - wartość współrzędnej Y w układzie kartezjańskim.
 
-Z (typ:float) - wartość współrzędnej X w układzie kartezjańskim.
+Z (typ:float) - wartość współrzędnej Z w układzie kartezjańskim.
 
 dx (typ:float) - delta X
 
@@ -203,10 +204,155 @@ X1992 (typ:float) - płaską współrzędną X w układzie Gaussa-Krüger 1992
 
 Y1992 (typ:float) - płaską współrzędną Y w układzie Gaussa-Krüger 1992
 
+
+
+
+
+## Funkcje dla list współrzędnych
+
+## XYZ_to_neu_lista
+Funkcja bierze za argumenty listy wartości, a następnie stosuje funkcję XYZ_to_neu, tak aby można było przeliczyć współrzędne do układu neu dla serii punktów.
+
+- Argumenty:
+x_kolumna (typ:float) - lista wartości współrzędnych X w układzie kartezjańskim.
+
+y_kolumna (typ:float) - lista wartość współrzędnych Y w układzie kartezjańskim.
+
+z_kolumna (typ:float) - lista wartość współrzędnych Z w układzie kartezjańskim.
+
+dx_kolumna (typ:float) - lista delta X
+
+dy_kolumna (typ:float) - lista delta Y
+
+dz_kolumna (typ:float) - lista delta Z
+
+- Zwraca:
+
+Funkcja zwraca listę wektorów zawierającą zmiany wzdłuż północnego, wschodniego i pionowego kierunku.
+
+
+
+
+
+## fl_80_2_2000_lista
+Funkcja przelicza współrzędne geograficzne na płaskie współrzędne Gaussa-Krügera w układzie 2000 dla elipsoidy GRS80. Jednak w odróżnieniu do poprzedniej funkcji, bierze ona za argumenty listy współrzędnych początkowych.
+
+- Argumenty:
+
+f_lista (typ:float) - lista szerokości geograficzne w stopniach dziesiętnych
+
+l_lista (typ:float) - lista długości geograficznych w stopniach dziesiętnych
+
+- Zwraca:
+
+X2000 (typ:float) - lista współrzędnych X w układzie Gaussa-Krügera 2000
+
+Y2000 (typ:float) - lista współrzędnych Y w układzie Gaussa-Krügera 2000
+
+
+
+## fl_80_2_gk1992_lista
+Funkcja przelicza współrzędne geograficzne na płaskie współrzędne Gaussa-Krügera w układzie 1992 dla elipsoidy GRS80. Jednak w odróżnieniu do poprzedniej funkcji, bierze ona za argumenty listy współrzędnych 
+
+- Argumenty:
+
+f_lista (typ:float) - lista szerokości geograficzne w stopniach dziesiętnych
+
+l_lista (typ:float) - lista długości geograficznych w stopniach dziesiętnych
+
+- Zwraca:
+
+X1992 (typ:float) - lista współrzędnych X w układzie Gaussa-Krügera 1992
+
+Y1992 (typ:float) - lista współrzędnych Y w układzie Gaussa-Krügera 1992
+
+
+
+## fl_84_2_gk2000
+Funkcja przelicza współrzędne geograficzne na płaskie współrzędne Gaussa-Krügera w układzie 2000 dla elipsoidy WGS84. Jednak w odróżnieniu do poprzedniej funkcji, bierze ona za argumenty listy współrzędnych 
+
+- Argumenty:
+
+f_lista (typ:float) - lista szerokości geograficzne w stopniach dziesiętnych
+
+l_lista (typ:float) - lista długości geograficznych w stopniach dziesiętnych
+
+- Zwraca:
+
+X2000 (typ:float) - lista współrzędnych X w układzie Gaussa-Krügera 2000
+
+Y2000 (typ:float) - lista współrzędnych Y w układzie Gaussa-Krügera 2000
+
+
+
+## fl_84_2_gk1992
+Funkcja przelicza współrzędne geograficzne na płaskie współrzędne Gaussa-Krüger w układzie 1992 dla elipsoidy WGS84.
+
+- Argumenty:
+
+f_lista (typ:float) - lista szerokości geograficzne w stopniach dziesiętnych
+
+l_lista (typ:float) - lista długości geograficznych w stopniach dziesiętnych
+
+- Zwraca:
+
+X1992 (typ:float) - lista współrzędnych X w układzie Gaussa-Krügera 1992
+
+Y1992 (typ:float) - lista współrzędnych Y w układzie Gaussa-Krügera 1992
+
+
+
+### Funkcje pobierające i zapisujące dane
+
+## Funkcja pobieranie_wsp
+Funkcja pobiera dane z zewnętrznego pliku tekstowego i zależnie od podanej komendy stosuje wybraną funkcję (z funkcji powyższych). 
+
+- Argumenty:
+
+file_patch - skopiowana ścieżka do folderu z odpowiednio sformatowanymi danymi początowymi
+
+rodziaj_tranfsormacji - wybrany z podanych: XYZ_to_flh, flh_to_XYZ, XYZ_to_neu, fl_GRS80_to_2000, fl_GRS80_to_1992, fl_WGS84_to_2000, fl_WGS84_to_1992
+
+- Zwraca:
+  wynik - jest to np.array złożony z tylu kolumn ile wartości zwraca wybrana transformacja, który funkcja zapisz zapisuje w zewnętrznym pliku.
+
+## Funkcja zapisz
+Funkcja ta jest zaimplementowana wewnątrz funkcji pobieranie_danych. Jej argumenty są z góry podane dla każdej z możliwych transformacji. Funkcja ta zapisuje wyniki danej transformacji w pliku tekstowym, w folderze w którym znajduje się program.
+
+- Argumenty:
+
+wynik - jest to wynik transformacji do której stosujemy metodę zapisz
+
+filename - jest to nazwa pod jaką plik zostanie zapisany, jest ona podana dla każdej z możliwych transformacji
+
+header - krótki opis wyniku, który jest zapisywany w pierwszej linijce pliku txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Instrukcja używania funkcji
 Aby zainstalować skrypt Pythona zawierający klasy i definicje z transformacjami geodezyjnymi, należy wykonać następujące kroki:
 
-1. Pobierz kod źródłowy skryptu z repozytorium Github.
+1. Pobierz kod źródłowy skryptu z repozytorium Github. Program znajduje się na gałęzi master.
 
 2. Zainstaluj Pythona na swoim komputerze, jeśli jeszcze go nie masz (werscja Pythona 3.9).
 
