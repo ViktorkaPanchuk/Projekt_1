@@ -389,6 +389,18 @@ Przykład użycia skryptu z pojedynczymi danymi:
 
 - **Przez wiersz poleceń:**
 
+- Użycie funkcji flh_to_XYZ:
+  \ścieżka do pliku w którym znajduje się program\python skrypt.py flh_to_XYZ 52 21 100
+ Wynik:
+  Współrzędna X:  570754.7914051721
+  Współrzędna Y:  -3454934.216159615
+  Współrzędna Z:  5313127.8261839645
+
+
+
+
+- Przykłady użycia programu:
+
 ![Example screenshot](/screens/flh_2_XYZ.png)
 
 - [ ] **Gdzie:**
@@ -397,7 +409,7 @@ Przykład użycia skryptu z pojedynczymi danymi:
    
   - "python" - program, przy pomocy którego uruchamiamy skrypt
    
-  - "skrupt.py" - nazwa skryptu, który będzie uruchomiony _albo_ ścieżka do skryptu
+  - "skrypt.py" - nazwa skryptu, który będzie uruchomiony _albo_ ścieżka do skryptu
    
   - "flh_to_XYZ" - nazwa transformacji, którą chcemy wykonać
    
