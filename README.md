@@ -543,6 +543,10 @@ Dane w pliku dla transformacji do i z układów PL-2000 i PL-1992 muszą być w 
 
 
 
+## Przykłady wyników dla funkcji pobierz_dane
+Gdy obliczamy transformacje dla pliku txt, program nie wyświetla wyników w wierszu poleceń, lecz zapisuje je do pliku txt.
+Używając funkcji pobierz_dane otrzymamy zatem odpowiedzi jak na przykładach:
+
 
 
 
