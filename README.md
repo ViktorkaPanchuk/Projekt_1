@@ -516,6 +516,22 @@ Wynik:
 pod nazwą transromacji należy wkleić nazwę z niżej wymienionych:
 
 
+XYZ_to_flh 
+
+flh_to_XYZ 
+
+XYZ_to_neu 
+ 
+fl_GRS80_to_2000
+
+fl_GRS80_to_1992
+
+fl_WGS84_to_2000
+
+fl_WGS84_to_1992
+
+
+
 
 ## Przygotowanie pliku z danymi
 
