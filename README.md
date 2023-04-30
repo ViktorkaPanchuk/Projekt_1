@@ -3,7 +3,8 @@
 # Transformacje - dokumentacja
 **Moduł Transformacje zawiera metody: XYZ_to_flh, flh_to_XYZ XYZ_to_neu, fl_80_2_gk2000, fl_80_2_gk1992, fl_84_2_gk2000, fl_84_2_gk1992**. 
 
-Funkcje wykorzystują się dla transformacji pojedynczych punktów albo przekształcania danych z pliku wejściowego
+Funkcje wykorzystują się dla transformacji pojedynczych punktów albo przekształcania danych z pliku wejściowego.
+Do obsługi programu najlepiej używać wiersza poleceń (Command Prompt lub Windows POwerShell)
 
 ## Spis treści:
 - [Do zainstalowania](#do-zainstalowania)
@@ -19,6 +20,10 @@ Funkcje wykorzystują się dla transformacji pojedynczych punktów albo przekszt
 - [fl_84_2_gk2000](#fl_84_2_gk2000)
 - [fl_84_2_gk1992](#fl_84_2_gk1992)
 - [Funkcje dla list współrzędnych](##Funkcje dla list współrzędnych)
+- [fl_80_2_gk2000_lista](#fl_80_2_gk2000_lista)
+- [fl_80_2_gk1992_lista](#fl_80_2_gk1992_lista)
+- [fl_84_2_gk2000_lista](#fl_84_2_gk2000_lista)
+- [fl_84_2_gk1992_lista](#fl_84_2_gk1992_lista)
 - [Instrukcja używania funkcji](#instrukcja-używania-funkcji)
 
 
@@ -145,7 +150,7 @@ l0: długość geograficzna punktu centralnego strefy UTM, wyznaczona w radianac
 nr_strefy: numer strefy UTM, do której należy punkt o zadanej długości geograficznej.
 
 ## fl_80_2_gk2000
-Funkcja przelicza współrzędne geograficzne na płaskie współrzędne Gaussa-Krüger w układzie 2000 dla elipsoidy GRS80.
+Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL-2000 dla elipsoidy GRS80.
 
 - Argumenty:
 
@@ -155,12 +160,12 @@ l (typ:float) - długość geograficzna w stopniach dziesiętnych
 
 - Zwraca:
 
-X2000 (typ:float) - płaską współrzędną X w układzie Gaussa-Krüger 2000
+X2000 (typ:float) - płaską współrzędną X w układzie PL-2000
 
-Y2000 (typ:float) - płaską współrzędną Y w układzie Gaussa-Krüger 2000
+Y2000 (typ:float) - płaską współrzędną Y w układzie PL-2000
 
 ## fl_80_2_gk1992
-Funkcja przelicza współrzędne geograficzne na płaskie współrzędne Gaussa-Krüger w układzie 1992 dla elipsoidy GRS80.
+Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL-1992 dla elipsoidy GRS80.
 
 - Argumenty:
 
@@ -170,12 +175,12 @@ l (typ:float) - długość geograficzna w stopniach dziesiętnych
 
 - Zwraca:
 
-X1992 (typ:float) - płaską współrzędną X w układzie Gaussa-Krüger 2000
+X1992 (typ:float) - płaską współrzędną X w układzie PL-1992
 
-Y1992 (typ:float) - płaską współrzędną Y w układzie Gaussa-Krüger 2000
+Y1992 (typ:float) - płaską współrzędną Y w układzie PL-1992
 
 ## fl_84_2_gk2000
-Funkcja przelicza współrzędne geograficzne na płaskie współrzędne Gaussa-Krüger w układzie 2000 dla elipsoidy WGS84.
+Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL-2000 dla elipsoidy WGS84.
 
 - Argumenty:
 
@@ -185,12 +190,12 @@ l (typ:float) - długość geograficzna w stopniach dziesiętnych
 
 - Zwraca:
 
-X2000 (typ:float) - płaską współrzędną X w układzie Gaussa-Krüger 2000
+X2000 (typ:float) - płaską współrzędną X w układzie PL-2000
 
-Y2000 (typ:float) - płaską współrzędną Y w układzie Gaussa-Krüger 2000
+Y2000 (typ:float) - płaską współrzędną Y w układzie PL-2000
 
 ## fl_84_2_gk1992
-Funkcja przelicza współrzędne geograficzne na płaskie współrzędne Gaussa-Krüger w układzie 1992 dla elipsoidy WGS84.
+Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL-1992 dla elipsoidy WGS84.
 
 - Argumenty:
 
@@ -200,9 +205,9 @@ l (typ:float) - długość geograficzna w stopniach dziesiętnych
 
 - Zwraca:
 
-X1992 (typ:float) - płaską współrzędną X w układzie Gaussa-Krüger 1992
+X1992 (typ:float) - płaską współrzędną X w układzie PL-1992
 
-Y1992 (typ:float) - płaską współrzędną Y w układzie Gaussa-Krüger 1992
+Y1992 (typ:float) - płaską współrzędną Y w układzie PL-1992
 
 
 
@@ -235,7 +240,7 @@ Funkcja zwraca listę wektorów zawierającą zmiany wzdłuż północnego, wsch
 
 
 ## fl_80_2_2000_lista
-Funkcja przelicza współrzędne geograficzne na płaskie współrzędne Gaussa-Krügera w układzie 2000 dla elipsoidy GRS80. Jednak w odróżnieniu do poprzedniej funkcji, bierze ona za argumenty listy współrzędnych początkowych.
+Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL-2000 dla elipsoidy GRS80. Jednak w odróżnieniu do poprzedniej funkcji, bierze ona za argumenty listy współrzędnych początkowych.
 
 - Argumenty:
 
@@ -245,14 +250,14 @@ l_lista (typ:float) - lista długości geograficznych w stopniach dziesiętnych
 
 - Zwraca:
 
-X2000 (typ:float) - lista współrzędnych X w układzie Gaussa-Krügera 2000
+X2000 (typ:float) - lista współrzędnych X w układzie PL-2000
 
-Y2000 (typ:float) - lista współrzędnych Y w układzie Gaussa-Krügera 2000
+Y2000 (typ:float) - lista współrzędnych Y w układzie PL-2000
 
 
 
 ## fl_80_2_gk1992_lista
-Funkcja przelicza współrzędne geograficzne na płaskie współrzędne Gaussa-Krügera w układzie 1992 dla elipsoidy GRS80. Jednak w odróżnieniu do poprzedniej funkcji, bierze ona za argumenty listy współrzędnych 
+Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL-1992 dla elipsoidy GRS80. Jednak w odróżnieniu do poprzedniej funkcji, bierze ona za argumenty listy współrzędnych 
 
 - Argumenty:
 
@@ -262,14 +267,14 @@ l_lista (typ:float) - lista długości geograficznych w stopniach dziesiętnych
 
 - Zwraca:
 
-X1992 (typ:float) - lista współrzędnych X w układzie Gaussa-Krügera 1992
+X1992 (typ:float) - lista współrzędnych X w układzie PL-1992
 
-Y1992 (typ:float) - lista współrzędnych Y w układzie Gaussa-Krügera 1992
+Y1992 (typ:float) - lista współrzędnych Y w układzie PL-1992
 
 
 
 ## fl_84_2_gk2000
-Funkcja przelicza współrzędne geograficzne na płaskie współrzędne Gaussa-Krügera w układzie 2000 dla elipsoidy WGS84. Jednak w odróżnieniu do poprzedniej funkcji, bierze ona za argumenty listy współrzędnych 
+Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL2000 dla elipsoidy WGS84. Jednak w odróżnieniu do poprzedniej funkcji, bierze ona za argumenty listy współrzędnych 
 
 - Argumenty:
 
@@ -279,14 +284,14 @@ l_lista (typ:float) - lista długości geograficznych w stopniach dziesiętnych
 
 - Zwraca:
 
-X2000 (typ:float) - lista współrzędnych X w układzie Gaussa-Krügera 2000
+X2000 (typ:float) - lista współrzędnych X w układzie PL-2000
 
-Y2000 (typ:float) - lista współrzędnych Y w układzie Gaussa-Krügera 2000
+Y2000 (typ:float) - lista współrzędnych Y w układzie PL-2000
 
 
 
 ## fl_84_2_gk1992
-Funkcja przelicza współrzędne geograficzne na płaskie współrzędne Gaussa-Krüger w układzie 1992 dla elipsoidy WGS84.
+Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL-1992 dla elipsoidy WGS84.
 
 - Argumenty:
 
@@ -296,9 +301,9 @@ l_lista (typ:float) - lista długości geograficznych w stopniach dziesiętnych
 
 - Zwraca:
 
-X1992 (typ:float) - lista współrzędnych X w układzie Gaussa-Krügera 1992
+X1992 (typ:float) - lista współrzędnych X w układzie PL-1992
 
-Y1992 (typ:float) - lista współrzędnych Y w układzie Gaussa-Krügera 1992
+Y1992 (typ:float) - lista współrzędnych Y w układzie PL-1992
 
 
 
