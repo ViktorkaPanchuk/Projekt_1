@@ -548,6 +548,28 @@ Gdy obliczamy transformacje dla pliku txt, program nie wyświetla wyników w wie
 Używając funkcji pobierz_dane otrzymamy zatem odpowiedzi jak na przykładach:
 
 
+&darr; Plik wyjściowy:
+
+![Example screenshot](screens\xyzflh.png)
+![Example screenshot](screens\flhxyz.png)
+
+
+![Example screenshot](screens\xyzneu.png)
+
+
+![Example screenshot](screens\flgrs2000.png)
+
+
+![Example screenshot](screens\flgrs1992.png)
+
+
+![Example screenshot](screens\flwgs2000.png)
+
+
+![Example screenshot](screens\flwgs1992.png)
+
+
+
 
 
 
