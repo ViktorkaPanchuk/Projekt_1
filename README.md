@@ -404,7 +404,7 @@ Wynik:
 
     Współrzędne neu (70.04399884419017, 6.583592135001265, 92.56770894637975)
     
-# Użycie funkcji fl_GRS80_to_2000 21 52
+# Użycie funkcji fl_GRS80_to_2000 
 
     \ścieżka do pliku w którym znajduje się program>python skrypt.py fl_GRS80_to_2000 21 52
 
@@ -413,7 +413,7 @@ Wynik:
     Współrzędna X2000:  2601137.0663114763
     Współrzędna Y2000:  11500168.930870896
 
-# Użycie funkcji fl_GRS80_to_2000 21 52
+# Użycie funkcji fl_GRS80_to_2000 
 
     \ścieżka do pliku w którym znajduje się program>python skrypt.py fl_GRS80_to_1992 21 52
     
@@ -422,7 +422,7 @@ Wynik:
     Współrzędna X1992:  -2578465.7034921288
     Współrzędna Y1992:  4076199.4923393293
 
-# Użycie funkcji fl_WGS80_to_2000 21 52
+# Użycie funkcji fl_WGS80_to_2000 
 
     \ścieżka do pliku w którym znajduje się program>python skrypt.py fl_WGS84_to_2000 21 52
 
@@ -431,7 +431,7 @@ Wynik:
     Współrzędna X2000:  2608244.775180605
     Współrzędna Y2000:  11499210.939543033
     
-# Użycie funkcji fl_WGS84_to_1992 21 52
+# Użycie funkcji fl_WGS84_to_1992 
 
     \ścieżka do pliku w którym znajduje się program>python skrypt.py fl_WGS84_to_1992 21 52
     
@@ -439,6 +439,37 @@ Wynik:
 
     Współrzędna X1992:  -2571531.2926037298
     Współrzędna Y1992:  4074907.456206129
+    
+    
+    
+## Użycie funkcji pobieranie_danych do obliczenia transformacji dla serii punktów
+
+    \ścieżka do pliku w którym znajduje się program>python skrypt.py pobierz_dane "ścieżka do pliku z danymi" "nazwa transformacji"
+    
+pod nazwą transromacji należy wkleić nazwę z niżej wymienionych:
+
+
+
+## Przygotowanie pliku z danymi
+
+Dane w pliku dla transformacji XYZ_to_flh oraz flh_to_XYZ muszą być w formacie:
+współrzędna1,współrzędna2,współrzędna3,
+współrzędna4,współrzędna5,współrzędna6,
+itd
+
+to jest: współrzędne muszą być ustawione w kolumnach, przedzielone przecinkami oraz bez spacji pomiędzy nimi.
+
+Dane w pliku dla transformacji XYZ_to_neu muszą być w formacie:
+współrzędnaX,współrzędnaY,współrzędnaZ,dX,dY,dZ,
+współrzędnaX,współrzędnaY,współrzędnaZ,dX,dY,dZ,
+itd
+    
+    
+Dane w pliku dla transformacji do i z układów PL-2000 i PL-1992 muszą być w formacie:
+współrzędnaF,współrzędnaL,
+współrzędnaF,współrzędnaL,
+itd  
+    
     
     
     
