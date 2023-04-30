@@ -373,6 +373,75 @@ Po wykonaniu tych kroków, skrypt będzie gotowy do użycia.
 
 Aby użyć skryptu, można wprowadzać pojedyncze dane przez wiersz poleceń lub użyć pliku z danymi. W przypadku pojedynczych danych, należy uruchomić skrypt i wprowadzić dane ręcznie w konsoli. W przypadku użycia pliku z danymi, należy umieścić dane w pliku tekstowym, oddzielając je przecinkami bez spacji w kolejności **f,l,h (X,Y,Z)**, a następnie wpisać nazwę pliku z rozszerzeniem (jeśli plik z danymi znajduje się jednym folderze ze skryptem) albo podać ścieżkę do pliku, po czym wpisać nazwę metody transformacji.
 
+
+## Użycie funkcji flh_to_XYZ
+
+    \ścieżka do pliku w którym znajduje się program>python skrypt.py flh_to_XYZ 52 21 100
+    
+Wynik:
+
+           Współrzędna X:  570754.7914051721
+           Współrzędna Y:  -3454934.216159615
+           Współrzędna Z:  5313127.8261839645
+
+## Użycie funkcji XYZ_to_flh
+
+    \ścieżka do pliku w którym znajduje się program>python skrypt.py XYZ_to_flh 52 21 100
+     
+Wynik:
+
+    flh w radianach: -0.0023451302834425155 1.1869787035063277 -6378081.0369568365
+    Szerokość geodezyjna:  -0.13436606764957462 °
+    Długość geodezyjna:  68.00887008282287 °
+    Wysokość geodezyjna:  -6378081.0369568365
+    
+    
+# Użycie funkcji XYZ_to_neu
+
+    \ścieżka do pliku w którym znajduje się program>python skrypt.py XYZ_to_neu 10 20 30 40 50 60
+    
+Wynik:
+
+    Współrzędne neu (70.04399884419017, 6.583592135001265, 92.56770894637975)
+    
+# Użycie funkcji fl_GRS80_to_2000 21 52
+
+    \ścieżka do pliku w którym znajduje się program>python skrypt.py fl_GRS80_to_2000 21 52
+
+Wynik:
+
+    Współrzędna X2000:  2601137.0663114763
+    Współrzędna Y2000:  11500168.930870896
+
+# Użycie funkcji fl_GRS80_to_2000 21 52
+
+    \ścieżka do pliku w którym znajduje się program>python skrypt.py fl_GRS80_to_1992 21 52
+    
+Wynik:
+
+    Współrzędna X1992:  -2578465.7034921288
+    Współrzędna Y1992:  4076199.4923393293
+
+# Użycie funkcji fl_WGS80_to_2000 21 52
+
+    \ścieżka do pliku w którym znajduje się program>python skrypt.py fl_WGS84_to_2000 21 52
+
+Wynik:    
+   
+    Współrzędna X2000:  2608244.775180605
+    Współrzędna Y2000:  11499210.939543033
+    
+# Użycie funkcji fl_WGS84_to_1992 21 52
+
+    \ścieżka do pliku w którym znajduje się program>python skrypt.py fl_WGS84_to_1992 21 52
+    
+Wynik:
+
+    Współrzędna X1992:  -2571531.2926037298
+    Współrzędna Y1992:  4074907.456206129
+    
+    
+    
 Przykład użycia skryptu z pojedynczymi danymi:
 
 - **W programie Spyder (Python 3.9.13):**
@@ -388,16 +457,6 @@ Przykład użycia skryptu z pojedynczymi danymi:
         print("Y: ", Y)
 
 - **Przez wiersz poleceń:**
-
-- Użycie funkcji flh_to_XYZ:
-  \ścieżka do pliku w którym znajduje się program\python skrypt.py flh_to_XYZ 52 21 100
- Wynik:
-  Współrzędna X:  570754.7914051721
-  Współrzędna Y:  -3454934.216159615
-  Współrzędna Z:  5313127.8261839645
-
-
-
 
 - Przykłady użycia programu:
 
