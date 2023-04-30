@@ -374,6 +374,73 @@ Po wykonaniu tych kroków, skrypt będzie gotowy do użycia.
 Aby użyć skryptu, można wprowadzać pojedyncze dane przez wiersz poleceń lub użyć pliku z danymi. W przypadku pojedynczych danych, należy uruchomić skrypt i wprowadzić dane ręcznie w konsoli. W przypadku użycia pliku z danymi, należy umieścić dane w pliku tekstowym, oddzielając je przecinkami bez spacji w kolejności **f,l,h (X,Y,Z)**, a następnie wpisać nazwę pliku z rozszerzeniem (jeśli plik z danymi znajduje się jednym folderze ze skryptem) albo podać ścieżkę do pliku, po czym wpisać nazwę metody transformacji.
 
 
+
+    
+    
+    
+Przykład użycia skryptu z pojedynczymi danymi:
+
+- **W programie Spyder (Python 3.9.13):**
+        
+        from skrypt.py import fl_80_2_gk2000
+
+        f = 53.1 # szerokość geograficzna
+        l = 18.6 # długość geograficzna
+
+        X, Y = fl_80_2_gk2000(f, l)
+
+        print("X: ", X)
+        print("Y: ", Y)
+
+- **Przez wiersz poleceń:**
+
+- Przykłady użycia programu:
+
+![Example screenshot](/screens/flh_2_XYZ.png)
+
+- [ ] **Gdzie:**
+
+  - "C:\Users\vikto\OneDrive\Dokumenty\Geodezja\Informatyka_II\Projekty\Projekt_1" - ścieżka do skryptu
+   
+  - "python" - program, przy pomocy którego uruchamiamy skrypt
+   
+  - "skrypt.py" - nazwa skryptu, który będzie uruchomiony _albo_ ścieżka do skryptu
+   
+  - "flh_to_XYZ" - nazwa transformacji, którą chcemy wykonać
+   
+  - "51 21 100" - dane (w tym przypadku flh), które będą transformowane
+
+Przykład użycia skryptu z danymi z pliku:
+
+Zamiast pojedynczych danych trzeba podać plik z danymi.
+  
+![Example screenshot](/screens/XYZ_to_neu.png)
+
+- [ ] **Gdzie:**
+
+  - "C:\Users\vikto\OneDrive\Dokumenty\Geodezja\Informatyka_II\Projekty\Projekt_1" - ścieżka do skryptu
+   
+  - "python" - program, przy pomocy którego uruchamiamy skrypt
+   
+  - "skrypt.py" - nazwa skryptu, który będzie uruchomiony **albo** ścieżka do skryptu
+   
+  - "pobierz_dane" - polecenie, którego używamy do pobierania danych z pliku .txt
+   
+  - "neu.txt" - nazwa pliku, z którego pobieramy dane _albo_ ścieżka do pliku
+  
+  - "XYZ_to_neu" - nazwa transformacji, którą chcemy wykonać
+  
+![Example screenshot](/screens/in.png)
+
+&uarr; Plik wejściowy:
+
+
+&darr; Plik wyjściowy:
+
+![Example screenshot](/screens/out.png)
+
+
+
 ## Użycie funkcji flh_to_XYZ
 
     \ścieżka do pliku w którym znajduje się program>python skrypt.py flh_to_XYZ 52 21 100
@@ -453,86 +520,26 @@ pod nazwą transromacji należy wkleić nazwę z niżej wymienionych:
 ## Przygotowanie pliku z danymi
 
 Dane w pliku dla transformacji XYZ_to_flh oraz flh_to_XYZ muszą być w formacie:
-współrzędna1,współrzędna2,współrzędna3,
-współrzędna4,współrzędna5,współrzędna6,
-itd
+
+    współrzędna1,współrzędna2,współrzędna3,
+    współrzędna4,współrzędna5,współrzędna6,
+    itd
 
 to jest: współrzędne muszą być ustawione w kolumnach, przedzielone przecinkami oraz bez spacji pomiędzy nimi.
 
 Dane w pliku dla transformacji XYZ_to_neu muszą być w formacie:
-współrzędnaX,współrzędnaY,współrzędnaZ,dX,dY,dZ,
-współrzędnaX,współrzędnaY,współrzędnaZ,dX,dY,dZ,
-itd
+
+    współrzędnaX,współrzędnaY,współrzędnaZ,dX,dY,dZ,
+    współrzędnaX,współrzędnaY,współrzędnaZ,dX,dY,dZ,
+    itd
     
     
 Dane w pliku dla transformacji do i z układów PL-2000 i PL-1992 muszą być w formacie:
-współrzędnaF,współrzędnaL,
-współrzędnaF,współrzędnaL,
-itd  
-    
-    
-    
-    
-Przykład użycia skryptu z pojedynczymi danymi:
 
-- **W programie Spyder (Python 3.9.13):**
-        
-        from skrypt.py import fl_80_2_gk2000
+    współrzędnaF,współrzędnaL,
+    współrzędnaF,współrzędnaL,
+    itd  
 
-        f = 53.1 # szerokość geograficzna
-        l = 18.6 # długość geograficzna
-
-        X, Y = fl_80_2_gk2000(f, l)
-
-        print("X: ", X)
-        print("Y: ", Y)
-
-- **Przez wiersz poleceń:**
-
-- Przykłady użycia programu:
-
-![Example screenshot](/screens/flh_2_XYZ.png)
-
-- [ ] **Gdzie:**
-
-  - "C:\Users\vikto\OneDrive\Dokumenty\Geodezja\Informatyka_II\Projekty\Projekt_1" - ścieżka do skryptu
-   
-  - "python" - program, przy pomocy którego uruchamiamy skrypt
-   
-  - "skrypt.py" - nazwa skryptu, który będzie uruchomiony _albo_ ścieżka do skryptu
-   
-  - "flh_to_XYZ" - nazwa transformacji, którą chcemy wykonać
-   
-  - "51 21 100" - dane (w tym przypadku flh), które będą transformowane
-
-Przykład użycia skryptu z danymi z pliku:
-
-Zamiast pojedynczych danych trzeba podać plik z danymi.
-  
-![Example screenshot](/screens/XYZ_to_neu.png)
-
-- [ ] **Gdzie:**
-
-  - "C:\Users\vikto\OneDrive\Dokumenty\Geodezja\Informatyka_II\Projekty\Projekt_1" - ścieżka do skryptu
-   
-  - "python" - program, przy pomocy którego uruchamiamy skrypt
-   
-  - "skrupt.py" - nazwa skryptu, który będzie uruchomiony **albo** ścieżka do skryptu
-   
-  - "pobierz_dane" - polecenie, którego używamy do pobierania danych z pliku .txt
-   
-  - "neu.txt" - nazwa pliku, z którego pobieramy dane _albo_ ścieżka do pliku
-  
-  - "XYZ_to_neu" - nazwa transformacji, którą chcemy wykonać
-  
-![Example screenshot](/screens/in.png)
-
-&uarr; Plik wejściowy:
-
-
-&darr; Plik wyjściowy:
-
-![Example screenshot](/screens/out.png)
 
 
 
