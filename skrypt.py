@@ -19,18 +19,32 @@ class Transformacje:
     # do pobierania wsp - wsp musza byc w pliku bez spacji w kolejnosci f,l,h, oddzielone przecinkami
     # file_path to scieżka skopiowana do danego pliku 
     def pobranie_wsp(self, file_path, rodzaj_transformacji): 
+        self.f_kolumna = []
+        self.l_kolumna = []
+        self.h_kolumna = []
+        self.dx_kolumna = []
+        self.dy_kolumna = []
+        self.dz_kolumna = []
         with open(file_path, 'r') as f:
             lines = f.readlines()
             for line in lines:
                 coordinates = []
                 for wsp in line.strip().split(','):
-                    coordinates.append((wsp))
-                self.wspolrzedne.append(coordinates)
-            self.f_kolumna = [row[0] for row in self.wspolrzedne]
-            self.l_kolumna = [row[1] for row in self.wspolrzedne]
-            self.h_kolumna = [row[2] for row in self.wspolrzedne]
-            self.dx_kolumna = [row[-1] for row in self.wspolrzedne]
-                #return(f_kolumna,l_kolumna,h_kolumna)
+                    coordinates.append(float(wsp))
+                self.f_kolumna.append(coordinates[0])
+                self.l_kolumna.append(coordinates[1])
+                self.h_kolumna.append(coordinates[2])
+                self.dx_kolumna.append(coordinates[-3])
+                self.dy_kolumna.append(coordinates[-2])
+                self.dz_kolumna.append(coordinates[-1])
+            #     for wsp in line.strip().split(','):
+            #         coordinates.append((wsp))
+            #     self.wspolrzedne.append(coordinates)
+            # self.f_kolumna = [row[0] for row in self.wspolrzedne]
+            # self.l_kolumna = [row[1] for row in self.wspolrzedne]
+            # self.h_kolumna = [row[2] for row in self.wspolrzedne]
+            # self.dx_kolumna = [row[-1] for row in self.wspolrzedne]
+            #     #return(f_kolumna,l_kolumna,h_kolumna)
             
             if rodzaj_transformacji == 'XYZ_to_flh':
                 f,l,h = self.XYZ_to_flh(self.f_kolumna, self.l_kolumna, self.h_kolumna) 
@@ -50,13 +64,20 @@ class Transformacje:
                 self.zapisz(wynik, 'wyniki_flh_to_XYZ', 'Wyniki transformacji: współrzędne X, Y, Z')
                 #print('Wynik transformacji flh do XYZ: ', 'X =', X,'Y =', Y, 'Z =', Z)
                 
-    # NEU
             elif rodzaj_transformacji == "XYZ_to_neu":
-                neu = self.XYZ_to_neu_lista(self.dx_kolumna,self.f_kolumna, self.l_kolumna, self.h_kolumna)
+                neu = self.XYZ_to_neu_lista(self.f_kolumna, self.l_kolumna, self.h_kolumna,self.dx_kolumna,self.dy_kolumna,self.dz_kolumna,)
                 wynik = np.column_stack((neu))
                 print('wynik',wynik)
                 self.zapisz(wynik, 'wyniki_XYZ_2_neu', 'Wyniki transformacji neu:')
                 print('Wynik transformacji XYZ do neu: ', neu)
+                
+    # NEU
+            # elif rodzaj_transformacji == "XYZ_to_neu":
+            #     neu = self.XYZ_to_neu_lista(self.dx_kolumna,self.f_kolumna, self.l_kolumna, self.h_kolumna)
+            #     wynik = np.column_stack((neu))
+            #     print('wynik',wynik)
+            #     self.zapisz(wynik, 'wyniki_XYZ_2_neu', 'Wyniki transformacji neu:')
+            #     print('Wynik transformacji XYZ do neu: ', neu)
                 
                 
             elif rodzaj_transformacji == 'fl_GRS80_to_2000':
@@ -162,12 +183,32 @@ class Transformacje:
     
     
 
-    def XYZ_to_neu(self,dx,dy,dz,X,Y,Z):
+    # def XYZ_to_neu(self,dx,dy,dz,X,Y,Z):
+    #     a = 6378137
+    #     e2 = 0.00669438002290 
+    #     p = np.sqrt(X**2 + Y**2)
+    #     f = np.arctan(Z/(p*(1-e2)))
+    #     delta_wsp = np.hstack((dx,dy,dz))
+    #     while True:
+    #         N = a/np.sqrt(1-e2*np.sin(f)**2)
+    #         h = (p/np.cos(f))-N
+    #         fp = f
+    #         f = np.arctan(Z/(p*(1-e2*(N/(N+h)))))
+    #         if np.abs(fp - f) < (0.000001/206265):
+    #             break
+    #     l = np.arctan2(Y,X)
+    #     R = np.array([[-np.sin(f)*np.cos(l), -np.sin(l), np.cos(f)*np.cos(l)],
+    #                   [-np.sin(f)*np.sin(l), np.cos(l), np.cos(f)*np.sin(l)],
+    #                   [np.cos(f), 0, np.sin(f)]])       
+    #     return(R.T @ delta_wsp)
+    
+    
+    def XYZ_to_neu(self, X, Y, Z, dx, dy, dz):
         a = 6378137
         e2 = 0.00669438002290 
         p = np.sqrt(X**2 + Y**2)
         f = np.arctan(Z/(p*(1-e2)))
-        delta_wsp = np.hstack((dx,dy,dz))
+        delta_wsp = np.hstack([dx,dy,dz])
         while True:
             N = a/np.sqrt(1-e2*np.sin(f)**2)
             h = (p/np.cos(f))-N
@@ -176,10 +217,19 @@ class Transformacje:
             if np.abs(fp - f) < (0.000001/206265):
                 break
         l = np.arctan2(Y,X)
+        # print(f/np.pi*180)
+        # print(l/np.pi*180)
+        # print(h)
         R = np.array([[-np.sin(f)*np.cos(l), -np.sin(l), np.cos(f)*np.cos(l)],
                       [-np.sin(f)*np.sin(l), np.cos(l), np.cos(f)*np.sin(l)],
                       [np.cos(f), 0, np.sin(f)]])       
-        return(R.T @ delta_wsp)
+        neu = R.T @ delta_wsp
+        # print(neu)
+        X_neu = X + neu[0]
+        Y_neu = Y + neu[1]
+        Z_neu = Z + neu[2]
+    
+        return(X_neu,Y_neu,Z_neu)
     
 
     # def XYZ_to_neu_lista(self, dX, X, Y, Z):
@@ -207,7 +257,12 @@ class Transformacje:
     #     return(dX @ R.T)
 
 
-
+    def XYZ_to_neu_lista(self, x_kolumna, y_kolumna, z_kolumna, dx_kolumna, dy_kolumna, dz_kolumna):
+      neu = []
+      for x, y, z, dx, dy, dz in zip(x_kolumna, y_kolumna, z_kolumna, dx_kolumna, dy_kolumna, dz_kolumna):
+          #dxyz = np.array([float(dx_kolumna), float(dy_kolumna), float(dz_kolumna)])
+          neu.append(self.XYZ_to_neu(x,y,z,dx,dy,dz))
+      return neu
 
 
   #  def __init__(self, a=6378137, e2=0.00669438002290):
@@ -627,18 +682,21 @@ if __name__ == '__main__':
 
 
     parser_XYZ_to_neu = subparsers.add_parser('XYZ_to_neu', help='Transformuj XYZ na neu')
-    parser_XYZ_to_neu.add_argument('dx', type=float, help='delta X')
-    parser_XYZ_to_neu.add_argument('dy', type=float, help='delta Y')
-    parser_XYZ_to_neu.add_argument('dz', type=float, help='delta Z')
     parser_XYZ_to_neu.add_argument('X', type=float, help='współrzędna X')
     parser_XYZ_to_neu.add_argument('Y', type=float, help='współrzędna Y')
     parser_XYZ_to_neu.add_argument('Z', type=float, help='współrzędna Z')
+    parser_XYZ_to_neu.add_argument('dx', type=float, help='delta X')
+    parser_XYZ_to_neu.add_argument('dy', type=float, help='delta Y')
+    parser_XYZ_to_neu.add_argument('dz', type=float, help='delta Z')
 
     parser_XYZ_to_neu_lista = subparsers.add_parser('XYZ_to_neu_lista', help='Transformuj XYZ na neu')
-    parser_XYZ_to_neu_lista.add_argument('lista dX', type=float, help='delta X')
+
     parser_XYZ_to_neu_lista.add_argument('lista X', type=float, help='lista współrzędnych X')
     parser_XYZ_to_neu_lista.add_argument('lista Y', type=float, help='lista współrzędnych Y')
     parser_XYZ_to_neu_lista.add_argument('lista Z', type=float, help='lista współrzędnych Z')
+    parser_XYZ_to_neu_lista.add_argument('lista dX', type=float, help='delta X')
+    parser_XYZ_to_neu_lista.add_argument('lista dY', type=float, help='delta Y')
+    parser_XYZ_to_neu_lista.add_argument('lista dZ', type=float, help='delta Z')
 
 
 
@@ -709,13 +767,13 @@ if __name__ == '__main__':
         
         
     elif args.operation == 'XYZ_to_neu':
-        result = transform.XYZ_to_neu(args.dx, args.dy, args.dz, args.X, args.Y, args.Z) 
+        result = transform.XYZ_to_neu(args.X, args.Y, args.Z,args.dx, args.dy, args.dz) 
         print("Współrzędne neu", result)
         
     elif args.operation == 'XYZ_to_neu_lista':
-        result = transform.XYZ_to_neu(args.dX, args.X, args.Y, args.Z) 
+        result = transform.XYZ_to_neu(args.X, args.Y, args.Z,args.dx, args.dy, args.dz) 
         print("Współrzędne neu", result)        
-        
+
         
     elif args.operation == 'fl_GRS80_to_2000':
         X2000,Y2000 = transform.fl_80_2_2000(args.f, args.l)
