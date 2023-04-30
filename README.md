@@ -19,7 +19,7 @@ Do obsługi programu najlepiej używać wiersza poleceń (Command Prompt lub Win
 - [fl_80_2_gk1992](#fl_80_2_gk1992)
 - [fl_84_2_gk2000](#fl_84_2_gk2000)
 - [fl_84_2_gk1992](#fl_84_2_gk1992)
-- [Funkcje dla list współrzędnych](##Funkcje dla list współrzędnych)
+- [Funkcje dla list współrzędnych](#funkcje-dla-list-współrzędnych)
 - [fl_80_2_gk2000_lista](#fl_80_2_gk2000_lista)
 - [fl_80_2_gk1992_lista](#fl_80_2_gk1992_lista)
 - [fl_84_2_gk2000_lista](#fl_84_2_gk2000_lista)
@@ -239,7 +239,7 @@ Funkcja zwraca listę wektorów zawierającą zmiany wzdłuż północnego, wsch
 
 
 
-## fl_80_2_2000_lista
+## fl_80_2_gk2000_lista
 Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL-2000 dla elipsoidy GRS80. Jednak w odróżnieniu do poprzedniej funkcji, bierze ona za argumenty listy współrzędnych początkowych.
 
 - Argumenty:
@@ -273,7 +273,7 @@ Y1992 (typ:float) - lista współrzędnych Y w układzie PL-1992
 
 
 
-## fl_84_2_gk2000
+## fl_84_2_gk2000_lista
 Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL2000 dla elipsoidy WGS84. Jednak w odróżnieniu do poprzedniej funkcji, bierze ona za argumenty listy współrzędnych 
 
 - Argumenty:
@@ -290,7 +290,7 @@ Y2000 (typ:float) - lista współrzędnych Y w układzie PL-2000
 
 
 
-## fl_84_2_gk1992
+## fl_84_2_gk1992_lista
 Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL-1992 dla elipsoidy WGS84.
 
 - Argumenty:
@@ -550,25 +550,25 @@ Używając funkcji pobierz_dane otrzymamy zatem odpowiedzi jak na przykładach:
 
 
 
-![Example screenshot](screens\xyzflh.png)
+![Example screenshot](/screens/80_to_1992.png)
 
 
-![Example screenshot](screens\flhxyz.png)
+![Example screenshot](/screens/80_to_2000.png)
 
 
-![Example screenshot](screens\xyzneu.png)
+![Example screenshot](/screens/84_to_1992.png)
 
 
-![Example screenshot](screens\flgrs2000.png)
+![Example screenshot](/screens/84_to_2000.png)
 
 
-![Example screenshot](screens\flgrs1992.png)
+![Example screenshot](/screens/flh_xyz.png)
 
 
-![Example screenshot](screens\flwgs2000.png)
+![Example screenshot](/screens/xyz_neu.png)
 
 
-![Example screenshot](screens\flwgs1992.png)
+![Example screenshot](/screens/xyz_to_flh.png)
 
 
 
