@@ -7,13 +7,13 @@ import numpy as np
 import argparse
 import math
 
-class Transformacje: 
+class Transformacje:
         
     def __init__(self):
         self.wspolrzedne = []
 
 
-    def pobranie_wsp(self, file_path, rodzaj_transformacji): 
+    def pobranie_wsp(self, file_path, rodzaj_transformacji):
         self.f_kolumna = []
         self.l_kolumna = []
         self.h_kolumna = []
@@ -52,7 +52,14 @@ class Transformacje:
                 wynik = np.column_stack((XYZ_neu))
                 self.zapisz(wynik, 'wyniki_XYZ_2_neu', 'Wyniki transformacji neu:')
                 print('Wynik transformacji XYZ do neu: ', XYZ_neu)
-
+                
+            elif rodzaj_transformacji == "XYZ_to_neu":
+                neu = self.XYZ_to_neu_lista(self.f_kolumna, self.l_kolumna, self.h_kolumna,self.dx_kolumna,self.dy_kolumna,self.dz_kolumna,)
+                wynik = np.column_stack((neu))
+                print('wynik',wynik)
+                self.zapisz(wynik, 'wyniki_XYZ_2_neu', 'Wyniki transformacji neu:')
+                print('Wynik transformacji XYZ do neu: ', neu)
+                
             elif rodzaj_transformacji == 'fl_GRS80_to_2000':
                 X2000,Y2000 = self.fl_80_2_2000_lista(self.f_kolumna,self.l_kolumna)
                 wynik = np.column_stack((X2000,Y2000))
@@ -148,6 +155,7 @@ class Transformacje:
             if np.abs(fp - f) < (0.000001/206265):
                 break
         l = np.arctan2(Y,X)
+
         R = np.array([[-np.sin(f)*np.cos(l), -np.sin(l), np.cos(f)*np.cos(l)],
                       [-np.sin(f)*np.sin(l), np.cos(l), np.cos(f)*np.sin(l)],
                       [np.cos(f), 0, np.sin(f)]])       
@@ -164,7 +172,7 @@ class Transformacje:
           neu.append(self.XYZ_to_neu(x,y,z,dx,dy,dz))
       return neu
 
-    
+
     def Rneu(self, f, l):
         R = np.array([[-np.sin(f)*np.cos(l), -np.sin(l), np.cos(f)*np.cos(l)],
                       [-np.sin(f)*np.sin(l), np.cos(l), np.cos(f)*np.sin(l)],
@@ -303,14 +311,11 @@ class Transformacje:
         Y1992 = m0 * Y_gk_92 + 500000
         return(X1992,Y1992)
     
-    def fl_80_2_1992_lista(self, f_lista, l_lista): #f,l w stopniach 
+    def fl_80_2_1992_lista(self, f_lista, l_lista):
         l0 = self.dms2rad(19, 00, 00)
-        
-        
         f_lista = [float(f)/180*np.pi for f in f_lista]
         l_lista = [float(l)/180*np.pi for l in l_lista]
         
-        # elipsoida GRS80
         a = 6378137 #m
         e2 = 0.00669438002290
         
