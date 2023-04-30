@@ -513,7 +513,7 @@ Wynik:
 
     \ścieżka do pliku w którym znajduje się program>python skrypt.py pobierz_dane "ścieżka do pliku z danymi" "nazwa transformacji"
     
-pod nazwą transromacji należy wkleić nazwę z niżej wymienionych:
+pod nazwą transformacji należy wkleić nazwę z niżej wymienionych:
 
 
 XYZ_to_flh 
