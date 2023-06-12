@@ -9,9 +9,12 @@ Do obsługi programu najlepiej używać wiersza poleceń (Command Prompt lub Win
 ## Spis treści:
 - [Do zainstalowania](#do-zainstalowania)
 - [rad_to_dms](#rad_to_dms)
-- [XYZ_to_flh](#xyz_to_flh)
-- [flh_to_XYZ](#flh_to_xyz)
-- [XYZ_to_neu](#xyz_to_neu)
+- [XYZ_to_flh80](#xyz_to_flh80)
+- [XYZ_to_flh84](#xyz_to_flh84)
+- [flh_to_XYZ80](#flh_to_xyz80)
+- [flh_to_XYZ84](#flh_to_xyz84)
+- [XYZ_to_neu80](#xyz_to_neu80)
+- [XYZ_to_neu84](#xyz_to_neu84)
 - [dms2degrees](#dms2degrees)
 - [dms2rad](#dms2rad)
 - [lambda0_2000](#lambda0_2000)
@@ -20,7 +23,8 @@ Do obsługi programu najlepiej używać wiersza poleceń (Command Prompt lub Win
 - [fl_84_2_gk2000](#fl_84_2_gk2000)
 - [fl_84_2_gk1992](#fl_84_2_gk1992)
 - [Funkcje dla list współrzędnych](#funkcje-dla-list-współrzędnych)
-- [XYZ_to_neu_lista](#xyz_to_neu_lista)
+- [XYZ_to_neu_lista80](#xyz_to_neu_lista80)
+- [XYZ_to_neu_lista84](#xyz_to_neu_lista84)
 - [fl_80_2_gk2000_lista](#fl_80_2_gk2000_lista)
 - [fl_80_2_gk1992_lista](#fl_80_2_gk1992_lista)
 - [fl_84_2_gk2000_lista](#fl_84_2_gk2000_lista)
@@ -53,8 +57,8 @@ x (typ: float) - wartość kąta w radianach.
 
 Funkcja nie zwraca wartości, ponieważ jest pomocniczą do wykonania Transformacji.
 
-## XYZ_to_flh
-Funkcja ta konwertuje współrzędne kartezjańskie X, Y i Z na szerokość geograficzną f, długość geograficzną l oraz wysokość h nad poziomem elipsoidy. 
+## XYZ_to_flh80
+Funkcja ta konwertuje współrzędne kartezjańskie X, Y i Z na szerokość geograficzną f, długość geograficzną l oraz wysokość h nad poziomem elipsoidy, dla elipsoidy GRS80.
 
 - Argumenty:
 
@@ -68,8 +72,23 @@ Z (typ: float) - wartość współrzędnej Z w układzie kartezjańskim.
 
 Funkcja zwraca trzy wartości typu float w postaci krotki (f, l, h), gdzie f to szerokość geograficzna w radianach, l to długość geograficzna w radianach, a h to wysokość nad poziomem elipsoidy w metrach.
 
-## flh_to_XYZ
-Funkcja ta konwertuje współrzędne geograficzne f, l i h na współrzędne kartezjańskie X, Y i Z. Argumentami metody są wartości f, l i h.
+## XYZ_to_flh84
+Funkcja ta konwertuje współrzędne kartezjańskie X, Y i Z na szerokość geograficzną f, długość geograficzną l oraz wysokość h nad poziomem elipsoidy, dla elipsoidy WGS84. 
+
+- Argumenty:
+
+X (typ: float) - wartość współrzędnej X w układzie kartezjańskim.
+
+Y (typ: float) - wartość współrzędnej Y w układzie kartezjańskim.
+
+Z (typ: float) - wartość współrzędnej Z w układzie kartezjańskim.
+
+- Zwraca:
+
+Funkcja zwraca trzy wartości typu float w postaci krotki (f, l, h), gdzie f to szerokość geograficzna w radianach, l to długość geograficzna w radianach, a h to wysokość nad poziomem elipsoidy w metrach.
+
+## flh_to_XYZ80
+Funkcja ta konwertuje współrzędne geograficzne f, l i h na współrzędne kartezjańskie X, Y i Z. Argumentami metody są wartości f, l i h, dla elipsoidy GRS80.
 
 - Argumenty:
 
@@ -83,8 +102,44 @@ h (typ: float) - wartość wysokości nad poziomem elipsoidy w metrach.
 
 Funkcja zwraca trzy wartości typu float w postaci krotki (X, Y, Z), gdzie X, Y, Z to wartości współrzędnych w układzie kartezjańskim.
 
-## XYZ_to_neu
-Funkcja przelicza zmiany we współrzędnych XYZ na zmiany wzdłuż północnego, wschodniego i pionowego kierunku. Wartości X, Y i Z odpowiadają współrzędnym geocentrycznym, a dX to wektor zmian we współrzędnych XYZ.
+## flh_to_XYZ84
+Funkcja ta konwertuje współrzędne geograficzne f, l i h na współrzędne kartezjańskie X, Y i Z. Argumentami metody są wartości f, l i h, dla elipsoidy WGS84.
+
+- Argumenty:
+
+f (typ: float) - wartość szerokości geograficznej w radianach.
+
+l (typ: float) - wartość długości geograficznej w radianach.
+
+h (typ: float) - wartość wysokości nad poziomem elipsoidy w metrach.
+
+- Zwraca:
+
+Funkcja zwraca trzy wartości typu float w postaci krotki (X, Y, Z), gdzie X, Y, Z to wartości współrzędnych w układzie kartezjańskim.
+
+## XYZ_to_neu80
+Funkcja przelicza zmiany we współrzędnych XYZ na zmiany wzdłuż północnego, wschodniego i pionowego kierunku. Wartości X, Y i Z odpowiadają współrzędnym geocentrycznym, a dX to wektor zmian we współrzędnych XYZ. Funkcja liczy dla elipsoidy GRS80.
+
+- Argumenty:
+
+X (typ:float) - wartość współrzędnej X w układzie kartezjańskim.
+
+Y (typ:float) - wartość współrzędnej Y w układzie kartezjańskim.
+
+Z (typ:float) - wartość współrzędnej Z w układzie kartezjańskim.
+
+dx (typ:float) - delta X
+
+dy (typ:float) - delta Y
+
+dz (typ:float) - delta Z
+
+- Zwraca:
+
+Funkcja zwraca wektor 3-elementowy w postaci listy, zawierający zmiany wzdłuż północnego, wschodniego i pionowego kierunku.
+
+## XYZ_to_neu84
+Funkcja przelicza zmiany we współrzędnych XYZ na zmiany wzdłuż północnego, wschodniego i pionowego kierunku. Wartości X, Y i Z odpowiadają współrzędnym geocentrycznym, a dX to wektor zmian we współrzędnych XYZ. Funkcja liczy dla elipsoidy WGS84.
 
 - Argumenty:
 
@@ -216,8 +271,8 @@ Y1992 (typ:float) - płaską współrzędną Y w układzie PL-1992
 
 ## Funkcje dla list współrzędnych
 
-## XYZ_to_neu_lista
-Funkcja bierze za argumenty listy wartości, a następnie stosuje funkcję XYZ_to_neu, tak aby można było przeliczyć współrzędne do układu neu dla serii punktów.
+## XYZ_to_neu_lista80
+Funkcja bierze za argumenty listy wartości, a następnie stosuje funkcję XYZ_to_neu, tak aby można było przeliczyć współrzędne do układu neu dla serii punktów. Funkcja liczy współrzędne dla elipsoidy GRS80.
 
 - Argumenty:
 x_kolumna (typ:float) - lista wartości współrzędnych X w układzie kartezjańskim.
@@ -236,7 +291,25 @@ dz_kolumna (typ:float) - lista delta Z
 
 Funkcja zwraca listę wektorów zawierającą zmiany wzdłuż północnego, wschodniego i pionowego kierunku.
 
+## XYZ_to_neu_lista84
+Funkcja bierze za argumenty listy wartości, a następnie stosuje funkcję XYZ_to_neu, tak aby można było przeliczyć współrzędne do układu neu dla serii punktów.Funkcja liczy współrzędne dla elipsoidy WGS84.
 
+- Argumenty:
+x_kolumna (typ:float) - lista wartości współrzędnych X w układzie kartezjańskim.
+
+y_kolumna (typ:float) - lista wartość współrzędnych Y w układzie kartezjańskim.
+
+z_kolumna (typ:float) - lista wartość współrzędnych Z w układzie kartezjańskim.
+
+dx_kolumna (typ:float) - lista delta X
+
+dy_kolumna (typ:float) - lista delta Y
+
+dz_kolumna (typ:float) - lista delta Z
+
+- Zwraca:
+
+Funkcja zwraca listę wektorów zawierającą zmiany wzdłuż północnego, wschodniego i pionowego kierunku.
 
 
 
