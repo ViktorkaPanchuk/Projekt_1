@@ -20,6 +20,7 @@ Do obsługi programu najlepiej używać wiersza poleceń (Command Prompt lub Win
 - [fl_84_2_gk2000](#fl_84_2_gk2000)
 - [fl_84_2_gk1992](#fl_84_2_gk1992)
 - [Funkcje dla list współrzędnych](#funkcje-dla-list-współrzędnych)
+- [XYZ_to_neu_lista](#xyz_to_neu_lista)
 - [fl_80_2_gk2000_lista](#fl_80_2_gk2000_lista)
 - [fl_80_2_gk1992_lista](#fl_80_2_gk1992_lista)
 - [fl_84_2_gk2000_lista](#fl_84_2_gk2000_lista)
