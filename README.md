@@ -1,7 +1,7 @@
 # Projekt_1
 
 # Transformacje - dokumentacja
-**Moduł Transformacje zawiera metody: XYZ_to_flh, flh_to_XYZ XYZ_to_neu, fl_80_2_gk2000, fl_80_2_gk1992, fl_84_2_gk2000, fl_84_2_gk1992**. 
+**Moduł Transformacje zawiera metody: XYZ_to_flh80, XYZ_to_flh84, flh_to_XYZ80, flh_to_XYZ84, XYZ_to_neu80, XYZ_to_neu84, fl_80_2_gk2000, fl_80_2_gk1992, fl_84_2_gk2000, fl_84_2_gk1992**. 
 
 Funkcje wykorzystują się dla transformacji pojedynczych punktów albo przekształcania danych z pliku wejściowego.
 Do obsługi programu najlepiej używać wiersza poleceń (Command Prompt lub Windows POwerShell)
