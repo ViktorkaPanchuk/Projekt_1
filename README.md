@@ -660,12 +660,16 @@ Używając funkcji pobierz_dane otrzymamy zatem odpowiedzi jak na przykładach:
 
 ![Example screenshot](/screens/flh_xyz.png)
 
+!! uwaga: komenda flh_xyz z powyższego obrazu ma teraz nazwę flh_xyz80 lub flh_xyz84 - w zalezności od wybranej elipsoidy.
+
 
 ![Example screenshot](/screens/xyz_neu.png)
 
+!! uwaga: komenda xyz_neu z powyższego obrazu ma teraz nazwę xyz_neu80 lub xyz_neu84 - w zalezności od wybranej elipsoidy.
 
 ![Example screenshot](/screens/xyz_to_flh.png)
 
+!! uwaga: komenda xyz_to_flh z powyższego obrazu ma teraz nazwę xyz_to_flh80 lub xyz_to_flh84 - w zalezności od wybranej elipsoidy.
 
 
 
