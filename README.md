@@ -62,11 +62,11 @@ Funkcja ta konwertuje współrzędne kartezjańskie X, Y i Z na szerokość geog
 
 - Argumenty:
 
-X (typ: float) - wartość współrzędnej X w układzie kartezjańskim.
+X (typ: float) - wartość współrzędnej X w metrach w układzie kartezjańskim.
 
-Y (typ: float) - wartość współrzędnej Y w układzie kartezjańskim.
+Y (typ: float) - wartość współrzędnej Y w metrach w układzie kartezjańskim.
 
-Z (typ: float) - wartość współrzędnej Z w układzie kartezjańskim.
+Z (typ: float) - wartość współrzędnej Z w metrach w układzie kartezjańskim.
 
 - Zwraca:
 
@@ -77,11 +77,11 @@ Funkcja ta konwertuje współrzędne kartezjańskie X, Y i Z na szerokość geog
 
 - Argumenty:
 
-X (typ: float) - wartość współrzędnej X w układzie kartezjańskim.
+X (typ: float) - wartość współrzędnej X w metrach w układzie kartezjańskim.
 
-Y (typ: float) - wartość współrzędnej Y w układzie kartezjańskim.
+Y (typ: float) - wartość współrzędnej Y w metrach w układzie kartezjańskim.
 
-Z (typ: float) - wartość współrzędnej Z w układzie kartezjańskim.
+Z (typ: float) - wartość współrzędnej Z w metrach w układzie kartezjańskim.
 
 - Zwraca:
 
@@ -122,11 +122,11 @@ Funkcja przelicza zmiany we współrzędnych XYZ na zmiany wzdłuż północnego
 
 - Argumenty:
 
-X (typ:float) - wartość współrzędnej X w układzie kartezjańskim.
+X (typ:float) - wartość współrzędnej X w metrach w układzie kartezjańskim.
 
-Y (typ:float) - wartość współrzędnej Y w układzie kartezjańskim.
+Y (typ:float) - wartość współrzędnej Y w metrach w układzie kartezjańskim.
 
-Z (typ:float) - wartość współrzędnej Z w układzie kartezjańskim.
+Z (typ:float) - wartość współrzędnej Z w metrach w układzie kartezjańskim.
 
 dx (typ:float) - delta X
 
@@ -143,17 +143,17 @@ Funkcja przelicza zmiany we współrzędnych XYZ na zmiany wzdłuż północnego
 
 - Argumenty:
 
-X (typ:float) - wartość współrzędnej X w układzie kartezjańskim.
+X (typ:float) - wartość współrzędnej X w metrach w układzie kartezjańskim.
 
-Y (typ:float) - wartość współrzędnej Y w układzie kartezjańskim.
+Y (typ:float) - wartość współrzędnej Y w metrach w układzie kartezjańskim.
 
-Z (typ:float) - wartość współrzędnej Z w układzie kartezjańskim.
+Z (typ:float) - wartość współrzędnej Z w metrach w układzie kartezjańskim.
 
-dx (typ:float) - delta X
+dx (typ:float) - delta X w metrach
 
-dy (typ:float) - delta Y
+dy (typ:float) - delta Y w metrach
 
-dz (typ:float) - delta Z
+dz (typ:float) - delta Z w metrach
 
 - Zwraca:
 
@@ -216,9 +216,9 @@ l (typ:float) - długość geograficzna w stopniach dziesiętnych
 
 - Zwraca:
 
-X2000 (typ:float) - płaską współrzędną X w układzie PL-2000
+X2000 (typ:float) - płaską współrzędną X w układzie PL-2000 w metrach
 
-Y2000 (typ:float) - płaską współrzędną Y w układzie PL-2000
+Y2000 (typ:float) - płaską współrzędną Y w układzie PL-2000 w metrach
 
 ## fl_80_2_gk1992
 Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL-1992 dla elipsoidy GRS80.
@@ -231,9 +231,9 @@ l (typ:float) - długość geograficzna w stopniach dziesiętnych
 
 - Zwraca:
 
-X1992 (typ:float) - płaską współrzędną X w układzie PL-1992
+X1992 (typ:float) - płaską współrzędną X w układzie PL-1992 w metrach
 
-Y1992 (typ:float) - płaską współrzędną Y w układzie PL-1992
+Y1992 (typ:float) - płaską współrzędną Y w układzie PL-1992 w metrach
 
 ## fl_84_2_gk2000
 Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL-2000 dla elipsoidy WGS84.
@@ -246,9 +246,9 @@ l (typ:float) - długość geograficzna w stopniach dziesiętnych
 
 - Zwraca:
 
-X2000 (typ:float) - płaską współrzędną X w układzie PL-2000
+X2000 (typ:float) - płaską współrzędną X w układzie PL-2000 w metrach
 
-Y2000 (typ:float) - płaską współrzędną Y w układzie PL-2000
+Y2000 (typ:float) - płaską współrzędną Y w układzie PL-2000 w metrach
 
 ## fl_84_2_gk1992
 Funkcja przelicza współrzędne geograficzne na płaskie współrzędne PL-1992 dla elipsoidy WGS84.
@@ -261,9 +261,9 @@ l (typ:float) - długość geograficzna w stopniach dziesiętnych
 
 - Zwraca:
 
-X1992 (typ:float) - płaską współrzędną X w układzie PL-1992
+X1992 (typ:float) - płaską współrzędną X w układzie PL-1992 w metrach
 
-Y1992 (typ:float) - płaską współrzędną Y w układzie PL-1992
+Y1992 (typ:float) - płaską współrzędną Y w układzie PL-1992 w metrach
 
 
 
@@ -275,17 +275,17 @@ Y1992 (typ:float) - płaską współrzędną Y w układzie PL-1992
 Funkcja bierze za argumenty listy wartości, a następnie stosuje funkcję XYZ_to_neu, tak aby można było przeliczyć współrzędne do układu neu dla serii punktów. Funkcja liczy współrzędne dla elipsoidy GRS80.
 
 - Argumenty:
-x_kolumna (typ:float) - lista wartości współrzędnych X w układzie kartezjańskim.
+x_kolumna (typ:float) - lista wartości współrzędnych X w metrach w układzie kartezjańskim.
 
-y_kolumna (typ:float) - lista wartość współrzędnych Y w układzie kartezjańskim.
+y_kolumna (typ:float) - lista wartość współrzędnych Y w metrach w układzie kartezjańskim.
 
-z_kolumna (typ:float) - lista wartość współrzędnych Z w układzie kartezjańskim.
+z_kolumna (typ:float) - lista wartość współrzędnych Z w metrach w układzie kartezjańskim.
 
-dx_kolumna (typ:float) - lista delta X
+dx_kolumna (typ:float) - lista delta X w metrach
 
-dy_kolumna (typ:float) - lista delta Y
+dy_kolumna (typ:float) - lista delta Y w metrach
 
-dz_kolumna (typ:float) - lista delta Z
+dz_kolumna (typ:float) - lista delta Z w metrach
 
 - Zwraca:
 
@@ -295,17 +295,17 @@ Funkcja zwraca listę wektorów zawierającą zmiany wzdłuż północnego, wsch
 Funkcja bierze za argumenty listy wartości, a następnie stosuje funkcję XYZ_to_neu, tak aby można było przeliczyć współrzędne do układu neu dla serii punktów.Funkcja liczy współrzędne dla elipsoidy WGS84.
 
 - Argumenty:
-x_kolumna (typ:float) - lista wartości współrzędnych X w układzie kartezjańskim.
+x_kolumna (typ:float) - lista wartości współrzędnych X w metrach w układzie kartezjańskim.
 
-y_kolumna (typ:float) - lista wartość współrzędnych Y w układzie kartezjańskim.
+y_kolumna (typ:float) - lista wartość współrzędnych Y w metrach w układzie kartezjańskim.
 
-z_kolumna (typ:float) - lista wartość współrzędnych Z w układzie kartezjańskim.
+z_kolumna (typ:float) - lista wartość współrzędnych Z w metrach w układzie kartezjańskim.
 
-dx_kolumna (typ:float) - lista delta X
+dx_kolumna (typ:float) - lista delta X w metrach
 
-dy_kolumna (typ:float) - lista delta Y
+dy_kolumna (typ:float) - lista delta Y w metrach
 
-dz_kolumna (typ:float) - lista delta Z
+dz_kolumna (typ:float) - lista delta Z w metrach
 
 - Zwraca:
 
@@ -324,9 +324,9 @@ l_lista (typ:float) - lista długości geograficznych w stopniach dziesiętnych
 
 - Zwraca:
 
-X2000 (typ:float) - lista współrzędnych X w układzie PL-2000
+X2000 (typ:float) - lista współrzędnych X w układzie PL-2000 w metrach
 
-Y2000 (typ:float) - lista współrzędnych Y w układzie PL-2000
+Y2000 (typ:float) - lista współrzędnych Y w układzie PL-2000 w metrach
 
 
 
@@ -341,9 +341,9 @@ l_lista (typ:float) - lista długości geograficznych w stopniach dziesiętnych
 
 - Zwraca:
 
-X1992 (typ:float) - lista współrzędnych X w układzie PL-1992
+X1992 (typ:float) - lista współrzędnych X w układzie PL-1992 w metrach
 
-Y1992 (typ:float) - lista współrzędnych Y w układzie PL-1992
+Y1992 (typ:float) - lista współrzędnych Y w układzie PL-1992 w metrach
 
 
 
@@ -358,9 +358,9 @@ l_lista (typ:float) - lista długości geograficznych w stopniach dziesiętnych
 
 - Zwraca:
 
-X2000 (typ:float) - lista współrzędnych X w układzie PL-2000
+X2000 (typ:float) - lista współrzędnych X w układzie PL-2000 w metrach
 
-Y2000 (typ:float) - lista współrzędnych Y w układzie PL-2000
+Y2000 (typ:float) - lista współrzędnych Y w układzie PL-2000 w metrach
 
 
 
@@ -375,9 +375,9 @@ l_lista (typ:float) - lista długości geograficznych w stopniach dziesiętnych
 
 - Zwraca:
 
-X1992 (typ:float) - lista współrzędnych X w układzie PL-1992
+X1992 (typ:float) - lista współrzędnych X w układzie PL-1992 w metrach
 
-Y1992 (typ:float) - lista współrzędnych Y w układzie PL-1992
+Y1992 (typ:float) - lista współrzędnych Y w układzie PL-1992 w metrach
 
 
 
@@ -590,11 +590,17 @@ Wynik:
 pod nazwą transformacji należy wkleić nazwę z niżej wymienionych:
 
 
-XYZ_to_flh 
+XYZ_to_flh80
 
-flh_to_XYZ 
+XYZ_to_flh84
 
-XYZ_to_neu 
+flh_to_XYZ80
+
+flh_to_XYZ84
+
+XYZ_to_neu80
+
+XYZ_to_neu84
  
 fl_GRS80_to_2000
 
