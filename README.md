@@ -515,9 +515,9 @@ Zamiast pojedynczych danych trzeba podać plik z danymi.
 
 
 
-## Użycie funkcji flh_to_XYZ
+## Użycie funkcji flh_to_XYZ84
 
-    \ścieżka do pliku w którym znajduje się program>python skrypt.py flh_to_XYZ 52 21 100
+    \ścieżka do pliku w którym znajduje się program>python skrypt.py flh_to_XYZ84 52 21 100
     
 Wynik:
 
@@ -525,9 +525,9 @@ Wynik:
            Współrzędna Y:  -3454934.216159615
            Współrzędna Z:  5313127.8261839645
 
-## Użycie funkcji XYZ_to_flh
+## Użycie funkcji XYZ_to_flh84
 
-    \ścieżka do pliku w którym znajduje się program>python skrypt.py XYZ_to_flh 52 21 100
+    \ścieżka do pliku w którym znajduje się program>python skrypt.py XYZ_to_flh84 52 21 100
      
 Wynik:
 
@@ -537,9 +537,9 @@ Wynik:
     Wysokość geodezyjna:  -6378081.0369568365
     
     
-# Użycie funkcji XYZ_to_neu
+# Użycie funkcji XYZ_to_neu84
 
-    \ścieżka do pliku w którym znajduje się program>python skrypt.py XYZ_to_neu 10 20 30 40 50 60
+    \ścieżka do pliku w którym znajduje się program>python skrypt.py XYZ_to_neu80 10 20 30 40 50 60
     
 Wynik:
 
