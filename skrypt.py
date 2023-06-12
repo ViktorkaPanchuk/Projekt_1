@@ -713,4 +713,4 @@ if __name__ == '__main__':
         print("Lista współrzędnych Y1992: ", Y1992)
        
     else:
-        print("Proszę wprowadzić nazwę operacji z podanych: XYZ_to_flh, flh_to_XYZ, XYZ_to_neu, fl_GRS80_to_2000, fl_GRS80_to_1992, fl_WGS84_to_2000, fl_WGS84_to_1992 ")
+        print("Proszę wprowadzić nazwę operacji z podanych: XYZ_to_flh80, XYZ_to_flh84, flh_to_XYZ80, flh_to_XYZ84, XYZ_to_neu80, XYZ_to_neu80, fl_GRS80_to_2000, fl_GRS80_to_1992, fl_WGS84_to_2000, fl_WGS84_to_1992 ")
