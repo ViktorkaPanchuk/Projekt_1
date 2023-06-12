@@ -31,22 +31,39 @@ class Transformacje:
                 self.dy_kolumna.append(coordinates[-2])
                 self.dz_kolumna.append(coordinates[-1])
 
-            if rodzaj_transformacji == 'XYZ_to_flh':
-                f,l,h = self.XYZ_to_flh(self.f_kolumna, self.l_kolumna, self.h_kolumna) 
+            if rodzaj_transformacji == 'XYZ_to_flh80':
+                f,l,h = self.XYZ_to_flh80(self.f_kolumna, self.l_kolumna, self.h_kolumna) 
                 wynik = np.array([f,l,h])
                 wynik = np.transpose(wynik)
                 wynik1 = np.column_stack((wynik))
-                self.zapisz(wynik1, 'wyniki_XYZ_to_flh', 'Wyniki transformacji: współrzędne f,l,h')
+                self.zapisz(wynik1, 'wyniki_XYZ_to_flh WGS80', 'Wyniki transformacji: współrzędne f,l,h')
             
-            elif rodzaj_transformacji == 'flh_to_XYZ':
-                X,Y,Z = self.flh_to_XYZ(self.f_kolumna, self.l_kolumna, self.h_kolumna)
+            elif rodzaj_transformacji == 'XYZ_to_flh84':
+                f,l,h = self.XYZ_to_flh84(self.f_kolumna, self.l_kolumna, self.h_kolumna) 
+                wynik = np.array([f,l,h])
+                wynik = np.transpose(wynik)
+                wynik1 = np.column_stack((wynik))
+                self.zapisz(wynik1, 'wyniki_XYZ_to_flh GRS84', 'Wyniki transformacji: współrzędne f,l,h')
+            
+            elif rodzaj_transformacji == 'flh_to_XYZ80':
+                X,Y,Z = self.flh_to_XYZ80(self.f_kolumna, self.l_kolumna, self.h_kolumna)
                 wynik = np.column_stack((X,Y,Z))
-                self.zapisz(wynik, 'wyniki_flh_to_XYZ', 'Wyniki transformacji: współrzędne X, Y, Z')
+                self.zapisz(wynik, 'wyniki_flh_to_XYZ WGS80', 'Wyniki transformacji: współrzędne X, Y, Z')
 
-            elif rodzaj_transformacji == "XYZ_to_neu":
-                XYZ_neu = self.XYZ_to_neu_lista(self.f_kolumna, self.l_kolumna, self.h_kolumna,self.dx_kolumna,self.dy_kolumna,self.dz_kolumna,)
+            elif rodzaj_transformacji == 'flh_to_XYZ84':
+                X,Y,Z = self.flh_to_XYZ84(self.f_kolumna, self.l_kolumna, self.h_kolumna)
+                wynik = np.column_stack((X,Y,Z))
+                self.zapisz(wynik, 'wyniki_flh_to_XYZ GRS84', 'Wyniki transformacji: współrzędne X, Y, Z')
+
+            elif rodzaj_transformacji == "XYZ_to_neu80":
+                XYZ_neu = self.XYZ_to_neu_lista80(self.f_kolumna, self.l_kolumna, self.h_kolumna,self.dx_kolumna,self.dy_kolumna,self.dz_kolumna,)
                 wynik = np.column_stack((XYZ_neu))
-                self.zapisz(wynik, 'wyniki_XYZ_2_neu', 'Wyniki transformacji neu:')
+                self.zapisz(wynik, 'wyniki_XYZ_2_neu WGS80', 'Wyniki transformacji neu:')
+                
+            elif rodzaj_transformacji == "XYZ_to_neu84":
+                XYZ_neu = self.XYZ_to_neu_lista84(self.f_kolumna, self.l_kolumna, self.h_kolumna,self.dx_kolumna,self.dy_kolumna,self.dz_kolumna,)
+                wynik = np.column_stack((XYZ_neu))
+                self.zapisz(wynik, 'wyniki_XYZ_2_neu GRS84', 'Wyniki transformacji neu:')
                 
             elif rodzaj_transformacji == 'fl_GRS80_to_2000':
                 X2000,Y2000 = self.fl_80_2_2000_lista(self.f_kolumna,self.l_kolumna)
@@ -91,9 +108,10 @@ class Transformacje:
         print(sig, "%3d %2d %7.5f" %(d,abs(m),abs(s)))
     
 
-    def XYZ_to_flh(self,X,Y,Z):
+    def XYZ_to_flh80(self,X,Y,Z):
         a = 6378137
         e2 = 0.00669438002290 
+
         X = np.array(X)
         Y = np.array(Y)
         Z = np.array(Z, dtype=np.float64)
@@ -112,7 +130,29 @@ class Transformacje:
         return [f, l, h]
     
     
-    def flh_to_XYZ(self, f, l, h):
+    def XYZ_to_flh84(self,X,Y,Z):
+        a = 6378137
+        e2 = 0.00335281068118231893543414612613
+        
+        X = np.array(X)
+        Y = np.array(Y)
+        Z = np.array(Z, dtype=np.float64)
+        p = np.sqrt(np.square(X.astype(np.float64)) + np.square(Y.astype(np.float64)))
+        f = np.arctan(np.divide(Z,(p*(1-e2))).astype(np.float64))
+        while True:
+            N = a/np.sqrt(1-e2*np.sin(f)**2)
+            h = (p/np.cos(f))-N
+            fp = f
+            f = np.arctan(np.divide(Z,(p*(1-e2*(N/(N+h))))))
+            if np.all(np.abs(fp - f) < (0.000001/206265)):
+                break
+        X = np.array(X).astype(np.float64)
+        Y = np.array(Y).astype(np.float64)
+        l = np.arctan2(Y,X)
+        return [f, l, h]
+    
+    
+    def flh_to_XYZ80(self, f, l, h):
         a = 6378137
         e2 = 0.00669438002290
         
@@ -126,7 +166,21 @@ class Transformacje:
         return (X, Y, Z)
 
 
-    def XYZ_to_neu(self, X, Y, Z, dx, dy, dz):
+    def flh_to_XYZ84(self, f, l, h):
+        a = 6378137
+        e2 = 0.00335281068118231893543414612613
+        
+        f = np.array(f).astype(float)
+        l = np.array(l).astype(float)
+        h = np.array(h).astype(float)
+        N = a/np.sqrt(1-e2*np.sin(f)**2)
+        X = (N + h) * np.cos(f) * np.cos(l)
+        Y = (N + h) * np.cos(f) * np.sin(l)
+        Z = (N * (1 - e2) + h) * np.sin(f)
+        return (X, Y, Z)
+
+
+    def XYZ_to_neu80(self, X, Y, Z, dx, dy, dz):
         a = 6378137
         e2 = 0.00669438002290 
         p = np.sqrt(X**2 + Y**2)
@@ -151,10 +205,42 @@ class Transformacje:
         return(X_neu,Y_neu,Z_neu)
 
 
-    def XYZ_to_neu_lista(self, x_kolumna, y_kolumna, z_kolumna, dx_kolumna, dy_kolumna, dz_kolumna):
+    def XYZ_to_neu84(self, X, Y, Z, dx, dy, dz):
+        a = 6378137
+        e2 = 0.00335281068118231893543414612613
+        p = np.sqrt(X**2 + Y**2)
+        f = np.arctan(Z/(p*(1-e2)))
+        delta_wsp = np.hstack([dx,dy,dz])
+        while True:
+            N = a/np.sqrt(1-e2*np.sin(f)**2)
+            h = (p/np.cos(f))-N
+            fp = f
+            f = np.arctan(Z/(p*(1-e2*(N/(N+h)))))
+            if np.abs(fp - f) < (0.000001/206265):
+                break
+        l = np.arctan2(Y,X)
+
+        R = np.array([[-np.sin(f)*np.cos(l), -np.sin(l), np.cos(f)*np.cos(l)],
+                      [-np.sin(f)*np.sin(l), np.cos(l), np.cos(f)*np.sin(l)],
+                      [np.cos(f), 0, np.sin(f)]])       
+        neu = R.T @ delta_wsp
+        X_neu = X + neu[0]
+        Y_neu = Y + neu[1]
+        Z_neu = Z + neu[2]
+        return(X_neu,Y_neu,Z_neu)
+
+
+    def XYZ_to_neu_lista80(self, x_kolumna, y_kolumna, z_kolumna, dx_kolumna, dy_kolumna, dz_kolumna):
       neu = []
       for x, y, z, dx, dy, dz in zip(x_kolumna, y_kolumna, z_kolumna, dx_kolumna, dy_kolumna, dz_kolumna):
-          neu.append(self.XYZ_to_neu(x,y,z,dx,dy,dz))
+          neu.append(self.XYZ_to_neu80(x,y,z,dx,dy,dz))
+      return neu
+
+
+    def XYZ_to_neu_lista84(self, x_kolumna, y_kolumna, z_kolumna, dx_kolumna, dy_kolumna, dz_kolumna):
+      neu = []
+      for x, y, z, dx, dy, dz in zip(x_kolumna, y_kolumna, z_kolumna, dx_kolumna, dy_kolumna, dz_kolumna):
+          neu.append(self.XYZ_to_neu84(x,y,z,dx,dy,dz))
       return neu
 
 
@@ -452,31 +538,57 @@ if __name__ == '__main__':
     parser_zapisz.add_argument('filename', help = 'nazwa pliku')
     parser_zapisz.add_argument('header', help = 'pierwszy wiersz w pliku')
     
-    parser_XYZ = subparsers.add_parser('XYZ_to_flh', help='Transformuj XYZ na flh')
-    parser_XYZ.add_argument('X', type=float, help='współrzędna X')
-    parser_XYZ.add_argument('Y', type=float, help='współrzędna Y')
-    parser_XYZ.add_argument('Z', type=float, help='współrzędna Z')
+    parser_XYZ80 = subparsers.add_parser('XYZ_to_flh80', help='Transformuj XYZ na flh GRS80')
+    parser_XYZ80.add_argument('X', type=float, help='współrzędna X')
+    parser_XYZ80.add_argument('Y', type=float, help='współrzędna Y')
+    parser_XYZ80.add_argument('Z', type=float, help='współrzędna Z')
     
-    parser_flh = subparsers.add_parser('flh_to_XYZ', help='Transformuj flh na XYZ')
-    parser_flh.add_argument('f', type=float, help='współrzędna fi')
-    parser_flh.add_argument('l', type=float, help='współrzędna lambda')
-    parser_flh.add_argument('h', type=float, help='współrzędna h')
+    parser_XYZ84 = subparsers.add_parser('XYZ_to_flh84', help='Transformuj XYZ na flh WGS84')
+    parser_XYZ84.add_argument('X', type=float, help='współrzędna X')
+    parser_XYZ84.add_argument('Y', type=float, help='współrzędna Y')
+    parser_XYZ84.add_argument('Z', type=float, help='współrzędna Z')
+    
+    parser_flh80 = subparsers.add_parser('flh_to_XYZ80', help='Transformuj flh na XYZ GRS80')
+    parser_flh80.add_argument('f', type=float, help='współrzędna fi')
+    parser_flh80.add_argument('l', type=float, help='współrzędna lambda')
+    parser_flh80.add_argument('h', type=float, help='współrzędna h')
 
-    parser_XYZ_to_neu = subparsers.add_parser('XYZ_to_neu', help='Transformuj XYZ na neu')
-    parser_XYZ_to_neu.add_argument('X', type=float, help='współrzędna X')
-    parser_XYZ_to_neu.add_argument('Y', type=float, help='współrzędna Y')
-    parser_XYZ_to_neu.add_argument('Z', type=float, help='współrzędna Z')
-    parser_XYZ_to_neu.add_argument('dx', type=float, help='delta X')
-    parser_XYZ_to_neu.add_argument('dy', type=float, help='delta Y')
-    parser_XYZ_to_neu.add_argument('dz', type=float, help='delta Z')
+    parser_flh84 = subparsers.add_parser('flh_to_XYZ84', help='Transformuj flh na XYZ WGS84')
+    parser_flh84.add_argument('f', type=float, help='współrzędna fi')
+    parser_flh84.add_argument('l', type=float, help='współrzędna lambda')
+    parser_flh84.add_argument('h', type=float, help='współrzędna h')
 
-    parser_XYZ_to_neu_lista = subparsers.add_parser('XYZ_to_neu_lista', help='Transformuj XYZ na neu')
-    parser_XYZ_to_neu_lista.add_argument('lista X', type=float, help='lista współrzędnych X')
-    parser_XYZ_to_neu_lista.add_argument('lista Y', type=float, help='lista współrzędnych Y')
-    parser_XYZ_to_neu_lista.add_argument('lista Z', type=float, help='lista współrzędnych Z')
-    parser_XYZ_to_neu_lista.add_argument('lista dX', type=float, help='delta X')
-    parser_XYZ_to_neu_lista.add_argument('lista dY', type=float, help='delta Y')
-    parser_XYZ_to_neu_lista.add_argument('lista dZ', type=float, help='delta Z')
+    parser_XYZ_to_neu80 = subparsers.add_parser('XYZ_to_neu80', help='Transformuj XYZ na neu GRS80')
+    parser_XYZ_to_neu80.add_argument('X', type=float, help='współrzędna X')
+    parser_XYZ_to_neu80.add_argument('Y', type=float, help='współrzędna Y')
+    parser_XYZ_to_neu80.add_argument('Z', type=float, help='współrzędna Z')
+    parser_XYZ_to_neu80.add_argument('dx', type=float, help='delta X')
+    parser_XYZ_to_neu80.add_argument('dy', type=float, help='delta Y')
+    parser_XYZ_to_neu80.add_argument('dz', type=float, help='delta Z')
+
+    parser_XYZ_to_neu84 = subparsers.add_parser('XYZ_to_neu84', help='Transformuj XYZ na neu WGS84')
+    parser_XYZ_to_neu84.add_argument('X', type=float, help='współrzędna X')
+    parser_XYZ_to_neu84.add_argument('Y', type=float, help='współrzędna Y')
+    parser_XYZ_to_neu84.add_argument('Z', type=float, help='współrzędna Z')
+    parser_XYZ_to_neu84.add_argument('dx', type=float, help='delta X')
+    parser_XYZ_to_neu84.add_argument('dy', type=float, help='delta Y')
+    parser_XYZ_to_neu84.add_argument('dz', type=float, help='delta Z')
+
+    parser_XYZ_to_neu_lista80 = subparsers.add_parser('XYZ_to_neu_lista80', help='Transformuj XYZ na neu GRS80')
+    parser_XYZ_to_neu_lista80.add_argument('lista X', type=float, help='lista współrzędnych X')
+    parser_XYZ_to_neu_lista80.add_argument('lista Y', type=float, help='lista współrzędnych Y')
+    parser_XYZ_to_neu_lista80.add_argument('lista Z', type=float, help='lista współrzędnych Z')
+    parser_XYZ_to_neu_lista80.add_argument('lista dX', type=float, help='delta X')
+    parser_XYZ_to_neu_lista80.add_argument('lista dY', type=float, help='delta Y')
+    parser_XYZ_to_neu_lista80.add_argument('lista dZ', type=float, help='delta Z')
+    
+    parser_XYZ_to_neu_lista84 = subparsers.add_parser('XYZ_to_neu_lista84', help='Transformuj XYZ na neu WGS84')
+    parser_XYZ_to_neu_lista84.add_argument('lista X', type=float, help='lista współrzędnych X')
+    parser_XYZ_to_neu_lista84.add_argument('lista Y', type=float, help='lista współrzędnych Y')
+    parser_XYZ_to_neu_lista84.add_argument('lista Z', type=float, help='lista współrzędnych Z')
+    parser_XYZ_to_neu_lista84.add_argument('lista dX', type=float, help='delta X')
+    parser_XYZ_to_neu_lista84.add_argument('lista dY', type=float, help='delta Y')
+    parser_XYZ_to_neu_lista84.add_argument('lista dZ', type=float, help='delta Z')
 
     parser_fl_GRS80_to_GK2000 = subparsers.add_parser('fl_GRS80_to_2000', help='Transformuj fl GRS80 na 2000')
     parser_fl_GRS80_to_GK2000.add_argument('f', type=float, help='współrzędna fi w stopniach')
@@ -518,26 +630,47 @@ if __name__ == '__main__':
     if args.operation == 'pobierz_dane':
         result = transform.pobranie_wsp(args.file_path, args.rodzaj_transformacji)
         
-    elif args.operation == 'XYZ_to_flh':
-        f,l,h = transform.XYZ_to_flh(args.X, args.Y, args.Z)
+    elif args.operation == 'XYZ_to_flh80':
+        f,l,h = transform.XYZ_to_flh80(args.X, args.Y, args.Z)
         print('flh w radianach:', f,l,h)
         print("Szerokość geodezyjna: ", f*180/np.pi, "°")
         print("Długość geodezyjna: ", l*180/np.pi, "°")
         print("Wysokość geodezyjna: ", h)  
+       
+    elif args.operation == 'XYZ_to_flh84':
+        f,l,h = transform.XYZ_to_flh84(args.X, args.Y, args.Z)
+        print('flh w radianach:', f,l,h)
+        print("Szerokość geodezyjna: ", f*180/np.pi, "°")
+        print("Długość geodezyjna: ", l*180/np.pi, "°")
+        print("Wysokość geodezyjna: ", h)
         
-    elif args.operation == 'flh_to_XYZ':
-        X,Y,Z = transform.flh_to_XYZ(args.f, args.l, args.h)
+    elif args.operation == 'flh_to_XYZ80':
+        X,Y,Z = transform.flh_to_XYZ80(args.f, args.l, args.h)
         print("Współrzędna X: ", X)
         print("Współrzędna Y: ", Y)
         print("Współrzędna Z: ", Z)   
 
-    elif args.operation == 'XYZ_to_neu':
-        result = transform.XYZ_to_neu(args.X, args.Y, args.Z,args.dx, args.dy, args.dz) 
+    elif args.operation == 'flh_to_XYZ84':
+        X,Y,Z = transform.flh_to_XYZ84(args.f, args.l, args.h)
+        print("Współrzędna X: ", X)
+        print("Współrzędna Y: ", Y)
+        print("Współrzędna Z: ", Z)
+
+    elif args.operation == 'XYZ_to_neu80':
+        result = transform.XYZ_to_neu80(args.X, args.Y, args.Z,args.dx, args.dy, args.dz) 
         print("Współrzędne neu", result)
 
-    elif args.operation == 'XYZ_to_neu_lista':
+    elif args.operation == 'XYZ_to_neu84':
+        result = transform.XYZ_to_neu84(args.X, args.Y, args.Z,args.dx, args.dy, args.dz) 
+        print("Współrzędne neu", result)
+
+    elif args.operation == 'XYZ_to_neu_lista80':
         result = transform.XYZ_to_neu(args.X, args.Y, args.Z,args.dx, args.dy, args.dz) 
         print("Współrzędne neu", result)        
+
+    elif args.operation == 'XYZ_to_neu_lista84':
+        result = transform.XYZ_to_neu84(args.X, args.Y, args.Z,args.dx, args.dy, args.dz) 
+        print("Współrzędne neu", result)   
 
     elif args.operation == 'fl_GRS80_to_2000':
         X2000,Y2000 = transform.fl_80_2_2000(args.f, args.l)
